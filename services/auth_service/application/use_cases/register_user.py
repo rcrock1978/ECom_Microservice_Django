@@ -1,6 +1,8 @@
+from django.core.mail import send_mail
+
 from ..crypto import hash_password
 from ...infrastructure.repositories import UserRepository
-from ...domain.entities import UserRole
+from services.auth_service.auth_service.models import UserRole
 from shared.message_bus import InMemoryMessageBus
 
 
@@ -16,6 +18,15 @@ def register_user(email: str, password: str, role: UserRole = UserRole.CUSTOMER,
         raise RegistrationError("User already exists")
     hashed = hash_password(password)
     user = repo.create(email=email, hashed_password=hashed, role=role)
+
+    # send confirmation email (stub)
+    send_mail(
+        "Welcome to Mango",
+        "Thank you for registering.",
+        "no-reply@mango.local",
+        [email],
+        fail_silently=True,
+    )
 
     # publish event
     if bus:

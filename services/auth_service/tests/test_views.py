@@ -1,5 +1,11 @@
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'services.auth_service.auth_service.settings')
+import django
+django.setup()
+
 from django.test import Client, TestCase
 from services.auth_service.infrastructure.repositories import UserRepository
+from django.core import mail
 from services.auth_service.domain.entities import UserRole
 
 
@@ -11,10 +17,12 @@ class AuthViewsTest(TestCase):
         views._user_repo = UserRepository()
 
     def test_register_endpoint(self):
+        mail.outbox = []
         resp = self.client.post('/register/', {'email': 'v@a.com', 'password': 'pw'}, content_type='application/json')
         self.assertEqual(resp.status_code, 201)
         data = resp.json()
         self.assertEqual(data['email'], 'v@a.com')
+        self.assertEqual(len(mail.outbox), 1)
 
     def test_login_endpoint(self):
         # register first via endpoint
@@ -24,9 +32,12 @@ class AuthViewsTest(TestCase):
         self.assertIn('access_token', resp.json())
 
     def test_password_reset_endpoint(self):
+        mail.outbox = []
         self.client.post('/register/', {'email': 'v3@a.com', 'password': 'pwd'}, content_type='application/json')
         resp = self.client.post('/password-reset/', {'email': 'v3@a.com', 'new_password': 'new'}, content_type='application/json')
         self.assertEqual(resp.status_code, 200)
+        # one email for registration and one for reset
+        self.assertEqual(len(mail.outbox), 2)
         # login with new password
         resp2 = self.client.post('/login/', {'email': 'v3@a.com', 'password': 'new'}, content_type='application/json')
         self.assertEqual(resp2.status_code, 200)

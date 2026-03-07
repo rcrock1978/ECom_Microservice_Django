@@ -1,3 +1,5 @@
+from django.core.mail import send_mail
+
 from ..crypto import hash_password
 from ...infrastructure.repositories import UserRepository
 from shared.message_bus import InMemoryMessageBus
@@ -16,5 +18,12 @@ def reset_password(email: str, new_password: str,
         raise ResetError("User not found")
     user.hashed_password = hash_password(new_password)
     repo.save(user)
+    send_mail(
+        "Password Reset",
+        "Your password has been changed.",
+        "no-reply@mango.local",
+        [email],
+        fail_silently=True,
+    )
     if bus:
         bus.publish("user.password_reset", {"user_id": user.id})

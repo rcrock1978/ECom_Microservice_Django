@@ -2,10 +2,10 @@ from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from ..application.use_cases.register_user import register_user, RegistrationError
-from ..application.use_cases.login_user import login_user, AuthenticationError
-from ..application.use_cases.reset_password import reset_password, ResetError
-from ...infrastructure.repositories import UserRepository, RefreshTokenRepository
+from services.auth_service.application.use_cases.register_user import register_user, RegistrationError
+from services.auth_service.application.use_cases.login_user import login_user, AuthenticationError
+from services.auth_service.application.use_cases.reset_password import reset_password, ResetError
+from services.auth_service.infrastructure.repositories import UserRepository, RefreshTokenRepository
 from shared.message_bus import InMemoryMessageBus
 
 

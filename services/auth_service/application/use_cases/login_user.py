@@ -4,7 +4,7 @@ from typing import Optional
 from ..crypto import verify_password
 from ..jwt_utils import create_access_token
 from ...infrastructure.repositories import UserRepository, RefreshTokenRepository
-from ...domain.entities import User, UserRole
+from services.auth_service.auth_service.models import UserRole
 from shared.message_bus import InMemoryMessageBus
 
 

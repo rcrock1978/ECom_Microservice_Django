@@ -5,10 +5,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'replace-me')
 DEBUG = os.environ.get('DEBUG', '1') == '1'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["testserver"]  # allow test client host
 
 INSTALLED_APPS = [
-    # future service-specific apps
+    "services.auth_service.auth_service",  # Django app for auth_service models
 ]
 
 MIDDLEWARE = [
@@ -18,7 +18,15 @@ MIDDLEWARE = [
     'services.auth_service.middleware.jwt_middleware.JWTAuthenticationMiddleware',
 ]
 
-ROOT_URLCONF = 'auth_service.urls'
+ROOT_URLCONF = 'services.auth_service.auth_service.urls'
+
+# when running tests we can bypass migrations to let Django syncdb
+MIGRATION_MODULES = {
+    'auth_service': None,
+}
+
+# use in-memory email backend for tests
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 TEMPLATES = [
     {
