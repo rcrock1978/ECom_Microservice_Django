@@ -9,22 +9,26 @@ description: "Task list for Mango Microservices E-Commerce Platform"
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Create project structure per implementation plan (services/, shared/, frontend/, specs/)
-- [ ] T002 Initialize Python/Django projects for each microservice in services/
-- [ ] T003 Initialize Next.js project in frontend/
-- [ ] T004 [P] Add Poetry and pnpm config files to root and services/frontend
-- [ ] T005 [P] Add Dockerfiles and docker-compose.yml for all services
-- [ ] T006 [P] Add .env.example files for all services and frontend
-- [ ] T007 [P] Configure pre-commit, linting, and formatting tools (black, isort, flake8, prettier)
+- [X] T001 Create project structure per implementation plan (services/, shared/, frontend/, specs/)
+- [X] T002 Initialize Python/Django projects for each microservice in services/
+- [X] T003 Initialize Next.js project in frontend/
+- [X] T004 [P] Add Poetry and pnpm config files to root and services/frontend
+- [X] T005 [P] Add Dockerfiles and docker-compose.yml for all services
+- [X] T006 [P] Add .env.example files for all services and frontend
+- [X] T007 [P] Configure pre-commit, linting, and formatting tools (black, isort, flake8, prettier)
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T008 Setup shared message bus library in shared/message_bus/
-- [ ] T009 [P] Implement base domain entities and value objects in each service (domain/entities.py)
-- [ ] T010 [P] Setup database schema and migrations for all services
-- [ ] T011 [P] Implement base JWT authentication and middleware in auth_service and gateway
+- [X] T008 Setup shared message bus library in shared/message_bus/
+- [X] T009 [P] Implement base domain entities and value objects in each service (domain/entities.py)
+- [X] T010 [P] Setup database schema and migrations for all services
+- [X] T011 [P] Implement base JWT authentication and middleware in auth_service and gateway
+- [X] T012 [P] Implement API Gateway routing, rate limiting, and error normalization in gateway/
+- [X] T013 [P] Setup CI pipeline for lint, test, build, and deploy
+- [X] T014 Configure logging, observability, and health checks for all services
+- [X] T015 Setup environment configuration management for all services
 - [ ] T012 [P] Implement API Gateway routing, rate limiting, and error normalization in gateway/
 - [ ] T013 [P] Setup CI pipeline for lint, test, build, and deploy
 - [ ] T014 Configure logging, observability, and health checks for all services
@@ -38,14 +42,14 @@ description: "Task list for Mango Microservices E-Commerce Platform"
 
 **Independent Test**: Register a new user, log in, verify session token, and admin login.
 
-- [ ] T016 [P] [US1] Create User and RefreshToken models in services/auth_service/domain/entities.py
-- [ ] T017 [P] [US1] Implement UserRepository and token logic in services/auth_service/infrastructure/repositories.py
-- [ ] T018 [P] [US1] Implement registration, login, password reset, and admin login endpoints in services/auth_service/presentation/views.py
-- [ ] T019 [US1] Implement JWT issuance and session management in services/auth_service/application/use_cases/
-- [ ] T020 [US1] Integrate email event publishing for registration and password reset
-- [ ] T021 [US1] Add account lockout logic after failed attempts
-- [ ] T022 [US1] Add role-based access control (Customer/Admin)
-- [ ] T023 [US1] Add contract and integration tests for registration, login, and password reset in services/auth_service/tests/
+- [X] T016 [P] [US1] Create User and RefreshToken models in services/auth_service/domain/entities.py
+- [X] T017 [P] [US1] Implement UserRepository and token logic in services/auth_service/infrastructure/repositories.py
+- [X] T018 [P] [US1] Implement registration, login, password reset, and admin login endpoints in services/auth_service/presentation/views.py
+- [X] T019 [US1] Implement JWT issuance and session management in services/auth_service/application/use_cases/
+- [X] T020 [US1] Integrate email event publishing for registration and password reset
+- [X] T021 [US1] Add account lockout logic after failed attempts
+- [X] T022 [US1] Add role-based access control (Customer/Admin)
+- [X] T023 [US1] Add contract and integration tests for registration, login, and password reset in services/auth_service/tests/
 
 ---
 

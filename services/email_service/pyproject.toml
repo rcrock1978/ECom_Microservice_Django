@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "email_service"
+version = "0.1.0"
+description = "Email microservice"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2"
+PyJWT = "^2.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
