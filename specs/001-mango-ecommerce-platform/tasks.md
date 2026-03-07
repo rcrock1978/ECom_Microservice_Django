@@ -105,20 +105,20 @@
 
 ### Tests for User Story 1 (Write FIRST — must FAIL before implementation)
 
-- [ ] T141 [P] [US1] Unit tests for User entity, Email/Password value objects, and account lockout logic in services/auth_service/tests/unit/test_entities.py and test_use_cases.py
-- [ ] T142 [US1] Integration tests for register, login, refresh, logout, me, forgot-password, reset-password endpoints in services/auth_service/tests/integration/test_auth_api.py
+- [X] T141 [P] [US1] Unit tests for User entity, Email/Password value objects, and account lockout logic in services/auth_service/tests/unit/test_entities.py and test_use_cases.py
+- [X] T142 [US1] Integration tests for register, login, refresh, logout, me, forgot-password, reset-password endpoints in services/auth_service/tests/integration/test_auth_api.py
 
 ### Implementation for User Story 1
 
-- [ ] T039 [P] [US1] Create auth domain layer (User entity dataclass, Email/Password/Role value objects, UserRepository ABC, UserRegistered/PasswordResetRequested events) in services/auth_service/auth/domain/
-- [ ] T040 [US1] Implement auth application use cases (RegisterUser, LoginUser, RefreshToken, LogoutUser, GetProfile, ForgotPassword, ResetPassword) with account lockout logic in services/auth_service/auth/application/
-- [ ] T041 [US1] Create auth Django ORM models (User with Argon2 password, RefreshToken with hash) and generate migrations in services/auth_service/auth/infrastructure/models.py
-- [ ] T042 [P] [US1] Implement DjangoUserRepository (CRUD, find_by_email, increment_failed_attempts, lock/unlock) in services/auth_service/auth/infrastructure/repositories.py
-- [ ] T043 [P] [US1] Implement JWT provider (issue access token 15min, refresh token 7d, httpOnly Secure SameSite=Lax cookies) in services/auth_service/auth/infrastructure/jwt_provider.py
-- [ ] T044 [US1] Implement event publisher for user.registered and user.password_reset_requested events in services/auth_service/auth/infrastructure/event_publisher.py
-- [ ] T045 [US1] Create DRF serializers (RegisterSerializer, LoginSerializer, TokenRefreshSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, UserProfileSerializer) in services/auth_service/auth/presentation/serializers.py
-- [ ] T046 [US1] Create DRF views (RegisterView, LoginView, RefreshView, LogoutView, MeView, ForgotPasswordView, ResetPasswordView) in services/auth_service/auth/presentation/views.py
-- [ ] T047 [US1] Configure auth service URL routing (all /auth/* endpoints) in services/auth_service/auth/presentation/urls.py and services/auth_service/config/urls.py
+- [X] T039 [P] [US1] Create auth domain layer (User entity dataclass, Email/Password/Role value objects, UserRepository ABC, UserRegistered/PasswordResetRequested events) in services/auth_service/auth/domain/
+- [X] T040 [US1] Implement auth application use cases (RegisterUser, LoginUser, RefreshToken, LogoutUser, GetProfile, ForgotPassword, ResetPassword) with account lockout logic in services/auth_service/auth/application/
+- [X] T041 [US1] Create auth Django ORM models (User with Argon2 password, RefreshToken with hash) and generate migrations in services/auth_service/auth/infrastructure/models.py
+- [X] T042 [P] [US1] Implement DjangoUserRepository (CRUD, find_by_email, increment_failed_attempts, lock/unlock) in services/auth_service/auth/infrastructure/repositories.py
+- [X] T043 [P] [US1] Implement JWT provider (issue access token 15min, refresh token 7d, httpOnly Secure SameSite=Lax cookies) in services/auth_service/auth/infrastructure/jwt_provider.py
+- [X] T044 [US1] Implement event publisher for user.registered and user.password_reset_requested events in services/auth_service/auth/infrastructure/event_publisher.py
+- [X] T045 [US1] Create DRF serializers (RegisterSerializer, LoginSerializer, TokenRefreshSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, UserProfileSerializer) in services/auth_service/auth/presentation/serializers.py
+- [X] T046 [US1] Create DRF views (RegisterView, LoginView, RefreshView, LogoutView, MeView, ForgotPasswordView, ResetPasswordView) in services/auth_service/auth/presentation/views.py
+- [X] T047 [US1] Configure auth service URL routing (all /auth/* endpoints) in services/auth_service/auth/presentation/urls.py and services/auth_service/config/urls.py
 - [ ] T048 [P] [US1] Create frontend login page (email/password form, validation, error display, redirect on success) in frontend/src/app/(auth)/login/page.tsx
 - [ ] T049 [P] [US1] Create frontend register page (name/email/password form, validation, success message, redirect to login) in frontend/src/app/(auth)/register/page.tsx
 - [ ] T050 [P] [US1] Create frontend forgot-password page and reset-password page (email form, token-based reset form) in frontend/src/app/(auth)/forgot-password/page.tsx and frontend/src/app/(auth)/reset-password/page.tsx

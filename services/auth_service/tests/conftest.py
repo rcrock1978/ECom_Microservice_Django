@@ -11,12 +11,14 @@ django.setup()
 from django.db import connection
 from services.auth_service.auth_service.models import User, RefreshToken
 with connection.schema_editor() as editor:
-    # if tables already exist this will error; ignore by try/except
+    # drop then recreate to ensure schema matches current models
     try:
-        editor.create_model(User)
+        editor.delete_model(RefreshToken)
     except Exception:
         pass
     try:
-        editor.create_model(RefreshToken)
+        editor.delete_model(User)
     except Exception:
         pass
+    editor.create_model(User)
+    editor.create_model(RefreshToken)

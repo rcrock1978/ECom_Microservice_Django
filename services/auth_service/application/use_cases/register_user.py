@@ -19,10 +19,14 @@ def register_user(email: str, password: str, role: UserRole = UserRole.CUSTOMER,
     hashed = hash_password(password)
     user = repo.create(email=email, hashed_password=hashed, role=role)
 
-    # send confirmation email (stub)
+    # generate verification token
+    from .verify_email import generate_verification
+    token = generate_verification(user, repo)
+
+    # send confirmation email with token link
     send_mail(
-        "Welcome to Mango",
-        "Thank you for registering.",
+        "Verify your Mango account",
+        f"Click here to verify: https://example.com/verify/{token}",
         "no-reply@mango.local",
         [email],
         fail_silently=True,

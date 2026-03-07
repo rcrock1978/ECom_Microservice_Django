@@ -65,3 +65,40 @@ def admin_login(request: HttpRequest):
     # reuse login with is_admin flag
     request.META["HTTP_IS_ADMIN"] = True
     return login(request)
+
+
+@csrf_exempt
+def refresh(request: HttpRequest):
+    if request.method != "POST":
+        return JsonResponse({"error": "method not allowed"}, status=405)
+    data = _parse_body(request)
+    from ..application.use_cases.refresh_token import refresh_access, RefreshError
+    try:
+        result = refresh_access(data.get("refresh_token"), token_repo=_token_repo, user_repo=_user_repo, bus=_bus)
+        return JsonResponse(result)
+    except RefreshError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+@csrf_exempt
+def verify_email(request: HttpRequest):
+    if request.method != "POST":
+        return JsonResponse({"error": "method not allowed"}, status=405)
+    data = _parse_body(request)
+    from ..application.use_cases.verify_email import verify_token, VerificationError
+    try:
+        verify_token(data.get("token"), repo=_user_repo, bus=_bus)
+        return JsonResponse({"status": "verified"})
+    except VerificationError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+@csrf_exempt
+def logout(request: HttpRequest):
+    if request.method != "POST":
+        return JsonResponse({"error": "method not allowed"}, status=405)
+    data = _parse_body(request)
+    token = _token_repo.get(data.get("refresh_token", ""))
+    if token:
+        _token_repo.revoke(token)
+    return JsonResponse({"status": "ok"})

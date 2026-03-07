@@ -24,6 +24,8 @@ def login_user(email: str, password: str, is_admin: bool = False,
         raise AuthenticationError("Invalid credentials")
     if user.is_locked:
         raise AuthenticationError("Account locked")
+    if not user.is_verified:
+        raise AuthenticationError("Email not verified")
     if not verify_password(password, user.hashed_password):
         repo.increment_failed_attempts(user)
         raise AuthenticationError("Invalid credentials")

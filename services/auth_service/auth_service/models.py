@@ -13,6 +13,9 @@ class User(models.Model):
     role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.CUSTOMER)
     is_locked = models.BooleanField(default=False)
     failed_attempts = models.IntegerField(default=0)
+    is_verified = models.BooleanField(default=False)
+    verification_token = models.CharField(max_length=64, blank=True, null=True)
+    token_expiry = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
