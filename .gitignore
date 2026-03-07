@@ -1,0 +1,76 @@
+# .gitignore for Mango E-Commerce Microservices Monorepo
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+
+# Django
+*.sqlite3
+*.db
+.env
+.env.*
+
+# Docker
+*.pid
+*.sock
+Dockerfile*
+.dockerignore
+
+# VSCode/IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Test/coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Misc
+*.tmp
+*.bak
+*.orig
+
+# Frontend
+frontend/.next/
+frontend/out/
+frontend/.env
+frontend/.env.*
+
+# Shared
+shared/.env
+shared/.env.*
+
+# Service-specific
+services/*/.env
+services/*/.env.*
+services/*/migrations/__pycache__/
+services/*/migrations/*.pyc
+services/*/migrations/*.pyo
+services/*/migrations/*.pyd
+
+# Ignore local PostgreSQL, Redis, RabbitMQ data (if any)
+pgdata/
+redisdata/
+rabbitmqdata/
+
+# Ignore coverage and test output
+coverage/
+
+# Ignore poetry lock files (if not used)
+poetry.lock

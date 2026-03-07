@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "ecom_microservices"
+version = "0.1.0"
+description = "Mango Microservices E-Commerce Platform"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0"
+djangorestframework = "^3.14"
+celery = "^5.3"
+redis = "^5.0"
+httpx = "^0.27"
+djangorestframework-simplejwt = "^5.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.0"
+pytest-django = "^4.7"
+factory_boy = "^3.3"
+black = "^24.0"
+flake8 = "^7.0"
+isort = "^5.13"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
