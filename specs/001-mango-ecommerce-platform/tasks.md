@@ -271,18 +271,18 @@
 
 ### Tests for User Story 7
 
-- [ ] T095 [P] [US7] Add email use-case and retry-policy unit tests in services/email_service/tests/unit/test_use_cases.py and services/email_service/tests/unit/test_retry_policy.py
-- [ ] T096 [US7] Add integration tests for event consumers, template rendering, and admin monitoring endpoints in services/email_service/tests/integration/test_email_service.py
+- [X] T095 [P] [US7] Add email use-case and retry-policy unit tests in services/email_service/tests/unit/test_use_cases.py and services/email_service/tests/unit/test_retry_policy.py
+- [X] T096 [US7] Add integration tests for event consumers, template rendering, and admin monitoring endpoints in services/email_service/tests/integration/test_email_service.py
 
 ### Implementation for User Story 7
 
-- [ ] T097 [P] [US7] Implement email-message domain models and repository contracts in services/email_service/emails/domain/entities.py and services/email_service/emails/domain/repositories.py
-- [ ] T098 [US7] Implement email send/retry/replay use cases in services/email_service/emails/application/use_cases/process_event_email.py, services/email_service/emails/application/use_cases/send_email.py, and services/email_service/emails/application/use_cases/retry_email.py
-- [ ] T099 [US7] Implement email persistence models and migrations in services/email_service/email_service/models.py and services/email_service/migrations/
-- [ ] T100 [P] [US7] Implement email repository, SMTP provider, and event consumers in services/email_service/emails/infrastructure/repositories.py, services/email_service/emails/infrastructure/smtp_provider.py, and services/email_service/emails/infrastructure/event_consumers.py
-- [ ] T101 [P] [US7] Add HTML and text email templates for all supported event types in services/email_service/emails/infrastructure/templates/
-- [ ] T102 [US7] Implement admin serializers and monitoring views in services/email_service/emails/presentation/serializers.py and services/email_service/emails/presentation/views.py
-- [ ] T103 [US7] Wire admin email endpoints in services/email_service/emails/presentation/urls.py and services/email_service/email_service/urls.py
+- [X] T097 [P] [US7] Implement email-message domain models and repository contracts in services/email_service/emails/domain/entities.py and services/email_service/emails/domain/repositories.py
+- [X] T098 [US7] Implement email send/retry/replay use cases in services/email_service/emails/application/use_cases/process_event_email.py, services/email_service/emails/application/use_cases/send_email.py, and services/email_service/emails/application/use_cases/retry_email.py
+- [X] T099 [US7] Implement email persistence models and migrations in services/email_service/email_service/models.py and services/email_service/migrations/
+- [X] T100 [P] [US7] Implement email repository, SMTP provider, and event consumers in services/email_service/emails/infrastructure/repositories.py, services/email_service/emails/infrastructure/smtp_provider.py, and services/email_service/emails/infrastructure/event_consumers.py
+- [X] T101 [P] [US7] Add HTML and text email templates for all supported event types in services/email_service/emails/infrastructure/templates/
+- [X] T102 [US7] Implement admin serializers and monitoring views in services/email_service/emails/presentation/serializers.py and services/email_service/emails/presentation/views.py
+- [X] T103 [US7] Wire admin email endpoints in services/email_service/emails/presentation/urls.py and services/email_service/email_service/urls.py
 
 **Checkpoint**: Transactional email delivery is asynchronous, observable, and resilient.
 

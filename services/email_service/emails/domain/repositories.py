@@ -1,0 +1,13 @@
+from typing import Protocol
+
+from emails.domain.entities import EmailMessage
+
+
+class EmailRepository(Protocol):
+    def save(self, message: EmailMessage) -> EmailMessage: ...
+
+    def get_by_id(self, message_id: str) -> EmailMessage | None: ...
+
+    def list_messages(self) -> list[EmailMessage]: ...
+
+    def list_failed(self) -> list[EmailMessage]: ...

@@ -1,5 +1,11 @@
 from pathlib import Path
 
+from emails.application.use_cases.process_event_email import ProcessEventEmailUseCase
+from emails.application.use_cases.retry_email import RetryEmailUseCase
+from emails.application.use_cases.send_email import SendEmailUseCase
+from emails.infrastructure.repositories import InMemoryEmailRepository
+from emails.infrastructure.smtp_provider import InMemorySmtpProvider
+
 
 class AuthEventConsumer:
     def __init__(self) -> None:
@@ -34,3 +40,22 @@ class OrderEventConsumer:
                 "body": body,
             }
         )
+
+
+class EmailEventConsumer:
+    def __init__(self, repository: InMemoryEmailRepository | None = None, smtp_provider: InMemorySmtpProvider | None = None) -> None:
+        self.repository = repository or InMemoryEmailRepository()
+        self.smtp_provider = smtp_provider or InMemorySmtpProvider()
+        self.send_email_use_case = SendEmailUseCase(self.repository, self.smtp_provider)
+        self.process_event_use_case = ProcessEventEmailUseCase(self.send_email_use_case)
+        self.retry_use_case = RetryEmailUseCase(self.repository, self.smtp_provider)
+
+    @classmethod
+    def in_memory(cls) -> "EmailEventConsumer":
+        return cls()
+
+    def handle_event(self, event_type: str, payload: dict[str, object]):
+        return self.process_event_use_case.execute(event_type=event_type, payload=payload)
+
+    def retry_failed_message(self, message_id: str):
+        return self.retry_use_case.execute(message_id)
