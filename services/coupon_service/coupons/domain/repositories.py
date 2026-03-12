@@ -1,0 +1,13 @@
+from typing import Protocol
+
+from coupons.domain.entities import Coupon, CouponUsage
+
+
+class CouponRepository(Protocol):
+    def get_by_code(self, code: str) -> Coupon | None: ...
+
+    def save(self, coupon: Coupon) -> Coupon: ...
+
+    def list(self, active_only: bool = False) -> list[Coupon]: ...
+
+    def add_usage(self, usage: CouponUsage) -> None: ...

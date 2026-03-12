@@ -140,19 +140,19 @@
 
 ### Tests for User Story 3
 
-- [ ] T049 [P] [US3] Add cart domain and use-case unit tests for quantity validation, subtotal calculation, and cart limits in services/cart_service/tests/unit/test_entities.py and services/cart_service/tests/unit/test_use_cases.py
-- [ ] T050 [US3] Add cart integration tests for get/add/update/remove/apply-coupon/remove-coupon flows in services/cart_service/tests/integration/test_cart_api.py
+- [X] T049 [P] [US3] Add cart domain and use-case unit tests for quantity validation, subtotal calculation, and cart limits in services/cart_service/tests/unit/test_entities.py and services/cart_service/tests/unit/test_use_cases.py
+- [X] T050 [US3] Add cart integration tests for get/add/update/remove/apply-coupon/remove-coupon flows in services/cart_service/tests/integration/test_cart_api.py
 
 ### Implementation for User Story 3
 
-- [ ] T051 [P] [US3] Implement cart and cart-item domain models and repository contracts in services/cart_service/cart/domain/entities.py and services/cart_service/cart/domain/repositories.py
-- [ ] T052 [US3] Implement cart use cases in services/cart_service/cart/application/use_cases/get_cart.py, services/cart_service/cart/application/use_cases/add_item.py, services/cart_service/cart/application/use_cases/update_item.py, services/cart_service/cart/application/use_cases/remove_item.py, services/cart_service/cart/application/use_cases/clear_cart.py, services/cart_service/cart/application/use_cases/apply_coupon.py, and services/cart_service/cart/application/use_cases/remove_coupon.py
-- [ ] T053 [US3] Implement cart persistence models and migrations in services/cart_service/cart_service/models.py and services/cart_service/migrations/
-- [ ] T054 [P] [US3] Implement cart repository and upstream product/coupon clients in services/cart_service/cart/infrastructure/repositories.py, services/cart_service/cart/infrastructure/product_client.py, and services/cart_service/cart/infrastructure/coupon_client.py
-- [ ] T055 [US3] Implement cart serializers and views in services/cart_service/cart/presentation/serializers.py and services/cart_service/cart/presentation/views.py
-- [ ] T056 [US3] Wire cart endpoints in services/cart_service/cart/presentation/urls.py and services/cart_service/cart_service/urls.py
-- [ ] T057 [P] [US3] Build the cart page and cart drawer UI in frontend/src/app/cart/page.tsx, frontend/src/components/cart/CartDrawer.tsx, and frontend/src/components/cart/CartItemRow.tsx
-- [ ] T058 [US3] Connect product pages and cart UI to the shared cart context in frontend/src/lib/cart/context.tsx and frontend/src/app/products/[slug]/page.tsx
+- [X] T051 [P] [US3] Implement cart and cart-item domain models and repository contracts in services/cart_service/cart/domain/entities.py and services/cart_service/cart/domain/repositories.py
+- [X] T052 [US3] Implement cart use cases in services/cart_service/cart/application/use_cases/get_cart.py, services/cart_service/cart/application/use_cases/add_item.py, services/cart_service/cart/application/use_cases/update_item.py, services/cart_service/cart/application/use_cases/remove_item.py, services/cart_service/cart/application/use_cases/clear_cart.py, services/cart_service/cart/application/use_cases/apply_coupon.py, and services/cart_service/cart/application/use_cases/remove_coupon.py
+- [X] T053 [US3] Implement cart persistence models and migrations in services/cart_service/cart_service/models.py and services/cart_service/migrations/
+- [X] T054 [P] [US3] Implement cart repository and upstream product/coupon clients in services/cart_service/cart/infrastructure/repositories.py, services/cart_service/cart/infrastructure/product_client.py, and services/cart_service/cart/infrastructure/coupon_client.py
+- [X] T055 [US3] Implement cart serializers and views in services/cart_service/cart/presentation/serializers.py and services/cart_service/cart/presentation/views.py
+- [X] T056 [US3] Wire cart endpoints in services/cart_service/cart/presentation/urls.py and services/cart_service/cart_service/urls.py
+- [X] T057 [P] [US3] Build the cart page and cart drawer UI in frontend/src/app/cart/page.tsx, frontend/src/components/cart/CartDrawer.tsx, and frontend/src/components/cart/CartItemRow.tsx
+- [X] T058 [US3] Connect product pages and cart UI to the shared cart context in frontend/src/lib/cart/context.tsx and frontend/src/app/products/[slug]/page.tsx
 
 **Checkpoint**: Cart CRUD, persistence, and subtotal updates work across sessions.
 
@@ -166,18 +166,18 @@
 
 ### Tests for User Story 4
 
-- [ ] T059 [P] [US4] Add coupon domain and discount-calculation unit tests in services/coupon_service/tests/unit/test_entities.py and services/coupon_service/tests/unit/test_discount_rules.py
-- [ ] T060 [US4] Add integration tests for validate, redeem, and admin coupon CRUD endpoints in services/coupon_service/tests/integration/test_coupon_api.py
+- [X] T059 [P] [US4] Add coupon domain and discount-calculation unit tests in services/coupon_service/tests/unit/test_entities.py and services/coupon_service/tests/unit/test_discount_rules.py
+- [X] T060 [US4] Add integration tests for validate, redeem, and admin coupon CRUD endpoints in services/coupon_service/tests/integration/test_coupon_api.py
 
 ### Implementation for User Story 4
 
-- [ ] T061 [P] [US4] Implement coupon and coupon-usage domain models and repository contracts in services/coupon_service/coupons/domain/entities.py and services/coupon_service/coupons/domain/repositories.py
-- [ ] T062 [US4] Implement validate, redeem, create, update, list, and deactivate coupon use cases in services/coupon_service/coupons/application/use_cases/validate_coupon.py, services/coupon_service/coupons/application/use_cases/redeem_coupon.py, services/coupon_service/coupons/application/use_cases/create_coupon.py, services/coupon_service/coupons/application/use_cases/update_coupon.py, and services/coupon_service/coupons/application/use_cases/list_coupons.py
-- [ ] T063 [US4] Implement coupon persistence models and migrations in services/coupon_service/coupon_service/models.py and services/coupon_service/migrations/
-- [ ] T064 [P] [US4] Implement coupon repository logic and idempotent redemption checks in services/coupon_service/coupons/infrastructure/repositories.py
-- [ ] T065 [US4] Implement coupon serializers and views for validation, redemption, and admin CRUD in services/coupon_service/coupons/presentation/serializers.py and services/coupon_service/coupons/presentation/views.py
-- [ ] T066 [US4] Wire coupon endpoints in services/coupon_service/coupons/presentation/urls.py and services/coupon_service/coupon_service/urls.py
-- [ ] T067 [US4] Add coupon seed command for development and quickstart validation in services/coupon_service/coupons/infrastructure/management/commands/seed_coupons.py
+- [X] T061 [P] [US4] Implement coupon and coupon-usage domain models and repository contracts in services/coupon_service/coupons/domain/entities.py and services/coupon_service/coupons/domain/repositories.py
+- [X] T062 [US4] Implement validate, redeem, create, update, list, and deactivate coupon use cases in services/coupon_service/coupons/application/use_cases/validate_coupon.py, services/coupon_service/coupons/application/use_cases/redeem_coupon.py, services/coupon_service/coupons/application/use_cases/create_coupon.py, services/coupon_service/coupons/application/use_cases/update_coupon.py, and services/coupon_service/coupons/application/use_cases/list_coupons.py
+- [X] T063 [US4] Implement coupon persistence models and migrations in services/coupon_service/coupon_service/models.py and services/coupon_service/migrations/
+- [X] T064 [P] [US4] Implement coupon repository logic and idempotent redemption checks in services/coupon_service/coupons/infrastructure/repositories.py
+- [X] T065 [US4] Implement coupon serializers and views for validation, redemption, and admin CRUD in services/coupon_service/coupons/presentation/serializers.py and services/coupon_service/coupons/presentation/views.py
+- [X] T066 [US4] Wire coupon endpoints in services/coupon_service/coupons/presentation/urls.py and services/coupon_service/coupon_service/urls.py
+- [X] T067 [US4] Add coupon seed command for development and quickstart validation in services/coupon_service/coupons/infrastructure/management/commands/seed_coupons.py
 
 **Checkpoint**: Coupon validation, redemption, and admin management are complete.
 
@@ -191,15 +191,15 @@
 
 ### Tests for User Story 10
 
-- [ ] T068 [US10] Add message-bus integration tests for publish/consume, retry, idempotency, and dead-letter behavior in shared/testing/test_message_bus.py
+- [X] T068 [US10] Add message-bus integration tests for publish/consume, retry, idempotency, and dead-letter behavior in shared/testing/test_message_bus.py
 
 ### Implementation for User Story 10
 
-- [ ] T069 [US10] Implement contract-specific domain event classes and payload serializers in shared/message_bus/events.py
-- [ ] T070 [P] [US10] Implement RabbitMQ exchange, queue-binding, and routing-key configuration in shared/message_bus/config.py and shared/message_bus/bindings.py
-- [ ] T071 [P] [US10] Add processed-event persistence and idempotency bookkeeping in services/product_service/catalog/infrastructure/processed_events.py, services/reward_service/rewards/infrastructure/processed_events.py, and services/email_service/emails/infrastructure/processed_events.py
-- [ ] T072 [US10] Implement consumer registration and worker bootstrap for product, reward, and email services in services/product_service/product_service/celery.py, services/reward_service/reward_service/celery.py, and services/email_service/email_service/celery.py
-- [ ] T073 [US10] Implement shared dead-letter inspection and replay helpers in shared/message_bus/dlq.py and shared/testing/fixtures.py
+- [X] T069 [US10] Implement contract-specific domain event classes and payload serializers in shared/message_bus/events.py
+- [X] T070 [P] [US10] Implement RabbitMQ exchange, queue-binding, and routing-key configuration in shared/message_bus/config.py and shared/message_bus/bindings.py
+- [X] T071 [P] [US10] Add processed-event persistence and idempotency bookkeeping in services/product_service/catalog/infrastructure/processed_events.py, services/reward_service/rewards/infrastructure/processed_events.py, and services/email_service/emails/infrastructure/processed_events.py
+- [X] T072 [US10] Implement consumer registration and worker bootstrap for product, reward, and email services in services/product_service/product_service/celery.py, services/reward_service/reward_service/celery.py, and services/email_service/email_service/celery.py
+- [X] T073 [US10] Implement shared dead-letter inspection and replay helpers in shared/message_bus/dlq.py and shared/testing/fixtures.py
 
 **Checkpoint**: The event bus is ready for order, reward, email, and inventory workflows.
 
@@ -213,24 +213,24 @@
 
 ### Tests for User Story 5
 
-- [ ] T074 [P] [US5] Add order domain unit tests for totals, discount rules, and status transitions in services/order_service/tests/unit/test_entities.py and services/order_service/tests/unit/test_status_transitions.py
-- [ ] T075 [US5] Add order integration tests for create, detail, list, cancel, webhook, and admin status-update flows in services/order_service/tests/integration/test_order_api.py
-- [ ] T076 [P] [US5] Add contract tests for cart, product, coupon, and reward upstream clients in services/order_service/tests/contract/test_service_clients.py
+- [X] T074 [P] [US5] Add order domain unit tests for totals, discount rules, and status transitions in services/order_service/tests/unit/test_entities.py and services/order_service/tests/unit/test_status_transitions.py
+- [X] T075 [US5] Add order integration tests for create, detail, list, cancel, webhook, and admin status-update flows in services/order_service/tests/integration/test_order_api.py
+- [X] T076 [P] [US5] Add contract tests for cart, product, coupon, and reward upstream clients in services/order_service/tests/contract/test_service_clients.py
 
 ### Implementation for User Story 5
 
-- [ ] T077 [P] [US5] Implement order and order-item domain models, status state machine, and domain events in services/order_service/orders/domain/entities.py and services/order_service/orders/domain/events.py
-- [ ] T078 [US5] Implement create-order, list-orders, get-order, cancel-order, payment-webhook, and admin status-update use cases in services/order_service/orders/application/use_cases/create_order.py, services/order_service/orders/application/use_cases/list_orders.py, services/order_service/orders/application/use_cases/get_order.py, services/order_service/orders/application/use_cases/cancel_order.py, services/order_service/orders/application/use_cases/handle_payment_webhook.py, and services/order_service/orders/application/use_cases/update_order_status.py
-- [ ] T079 [US5] Implement order persistence models and migrations in services/order_service/order_service/models.py and services/order_service/migrations/
-- [ ] T080 [P] [US5] Implement order repository and upstream service clients in services/order_service/orders/infrastructure/repositories.py and services/order_service/orders/infrastructure/service_clients.py
-- [ ] T081 [US5] Implement payment-provider integration and event publishing in services/order_service/orders/infrastructure/payment_provider.py and services/order_service/orders/infrastructure/event_publisher.py
-- [ ] T082 [US5] Implement order serializers and views in services/order_service/orders/presentation/serializers.py and services/order_service/orders/presentation/views.py
-- [ ] T083 [US5] Wire order endpoints and webhook routes in services/order_service/orders/presentation/urls.py and services/order_service/order_service/urls.py
-- [ ] T084 [P] [US5] Build checkout, order history, and order detail pages in frontend/src/app/checkout/page.tsx, frontend/src/app/orders/page.tsx, and frontend/src/app/orders/[orderNumber]/page.tsx
-- [ ] T085 [US5] Connect checkout UI to payment redirects, success/failure handling, and order retrieval in frontend/src/app/checkout/success/page.tsx, frontend/src/app/checkout/failure/page.tsx, and frontend/src/lib/api/client.ts
-- [ ] T121 [US5] Implement order timeout monitor and retry/cancel flow (default 15 minutes) for pending payments in services/order_service/orders/application/use_cases/handle_order_timeout.py and services/order_service/order_service/celery.py
-- [ ] T122 [US5] Implement required checkout side effects for confirmation email and reward credit on order confirmation in services/email_service/emails/infrastructure/event_consumers.py and services/reward_service/rewards/infrastructure/event_consumers.py
-- [ ] T123 [US5] Add end-to-end integration test for checkout -> order confirmation -> reward credit + confirmation email in services/order_service/tests/integration/test_checkout_side_effects.py
+- [X] T077 [P] [US5] Implement order and order-item domain models, status state machine, and domain events in services/order_service/orders/domain/entities.py and services/order_service/orders/domain/events.py
+- [X] T078 [US5] Implement create-order, list-orders, get-order, cancel-order, payment-webhook, and admin status-update use cases in services/order_service/orders/application/use_cases/create_order.py, services/order_service/orders/application/use_cases/list_orders.py, services/order_service/orders/application/use_cases/get_order.py, services/order_service/orders/application/use_cases/cancel_order.py, services/order_service/orders/application/use_cases/handle_payment_webhook.py, and services/order_service/orders/application/use_cases/update_order_status.py
+- [X] T079 [US5] Implement order persistence models and migrations in services/order_service/order_service/models.py and services/order_service/migrations/
+- [X] T080 [P] [US5] Implement order repository and upstream service clients in services/order_service/orders/infrastructure/repositories.py and services/order_service/orders/infrastructure/service_clients.py
+- [X] T081 [US5] Implement payment-provider integration and event publishing in services/order_service/orders/infrastructure/payment_provider.py and services/order_service/orders/infrastructure/event_publisher.py
+- [X] T082 [US5] Implement order serializers and views in services/order_service/orders/presentation/serializers.py and services/order_service/orders/presentation/views.py
+- [X] T083 [US5] Wire order endpoints and webhook routes in services/order_service/orders/presentation/urls.py and services/order_service/order_service/urls.py
+- [X] T084 [P] [US5] Build checkout, order history, and order detail pages in frontend/src/app/checkout/page.tsx, frontend/src/app/orders/page.tsx, and frontend/src/app/orders/[orderNumber]/page.tsx
+- [X] T085 [US5] Connect checkout UI to payment redirects, success/failure handling, and order retrieval in frontend/src/app/checkout/success/page.tsx, frontend/src/app/checkout/failure/page.tsx, and frontend/src/lib/api/client.ts
+- [X] T121 [US5] Implement order timeout monitor and retry/cancel flow (default 15 minutes) for pending payments in services/order_service/orders/application/use_cases/handle_order_timeout.py and services/order_service/order_service/celery.py
+- [X] T122 [US5] Implement required checkout side effects for confirmation email and reward credit on order confirmation in services/email_service/emails/infrastructure/event_consumers.py and services/reward_service/rewards/infrastructure/event_consumers.py
+- [X] T123 [US5] Add end-to-end integration test for checkout -> order confirmation -> reward credit + confirmation email in services/order_service/tests/integration/test_checkout_side_effects.py
 
 **Checkpoint**: A complete purchase flow works and emits the required events.
 

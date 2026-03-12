@@ -23,3 +23,31 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
 
   return response.json() as Promise<T>;
 }
+
+type CheckoutItem = {
+  product_id: string;
+  product_name: string;
+  unit_price: number;
+  quantity: number;
+};
+
+export async function createOrder(items: CheckoutItem[]) {
+  return apiRequest<{ data: { order_number: string; status: string } }>("/api/v1/orders/", {
+    method: "POST",
+    body: JSON.stringify({ items }),
+  });
+}
+
+export async function fetchOrders() {
+  return apiRequest<{ data: Array<{ order_number: string; status: string; total_amount: string }> }>("/api/v1/orders/");
+}
+
+export async function fetchOrder(orderNumber: string) {
+  return apiRequest<{ data: { order_number: string; status: string; total_amount: string } }>(
+    `/api/v1/orders/${orderNumber}/`,
+  );
+}
+
+export function getCheckoutResultRoute(success: boolean): string {
+  return success ? "/checkout/success" : "/checkout/failure";
+}
