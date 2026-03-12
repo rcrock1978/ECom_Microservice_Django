@@ -244,19 +244,19 @@
 
 ### Tests for User Story 6
 
-- [ ] T086 [P] [US6] Add reward-account and redemption unit tests in services/reward_service/tests/unit/test_entities.py and services/reward_service/tests/unit/test_redemption_rules.py
-- [ ] T087 [US6] Add integration tests for reward summary, history, validate-redemption, redeem, and order-confirmed consumption in services/reward_service/tests/integration/test_reward_api.py
+- [X] T086 [P] [US6] Add reward-account and redemption unit tests in services/reward_service/tests/unit/test_entities.py and services/reward_service/tests/unit/test_redemption_rules.py
+- [X] T087 [US6] Add integration tests for reward summary, history, validate-redemption, redeem, and order-confirmed consumption in services/reward_service/tests/integration/test_reward_api.py
 
 ### Implementation for User Story 6
 
-- [ ] T088 [P] [US6] Implement reward-account and reward-transaction domain models in services/reward_service/rewards/domain/entities.py and services/reward_service/rewards/domain/repositories.py
-- [ ] T089 [US6] Implement reward summary, transaction history, validate-redemption, redeem-points, credit-points, and expire-points use cases in services/reward_service/rewards/application/use_cases/get_summary.py, services/reward_service/rewards/application/use_cases/list_transactions.py, services/reward_service/rewards/application/use_cases/validate_redemption.py, services/reward_service/rewards/application/use_cases/redeem_points.py, services/reward_service/rewards/application/use_cases/credit_points.py, and services/reward_service/rewards/application/use_cases/expire_points.py
-- [ ] T090 [US6] Implement reward persistence models and migrations in services/reward_service/reward_service/models.py and services/reward_service/migrations/
-- [ ] T091 [P] [US6] Implement reward repository, order-confirmed consumer, and reward-points-earned publisher in services/reward_service/rewards/infrastructure/repositories.py, services/reward_service/rewards/infrastructure/event_consumers.py, and services/reward_service/rewards/infrastructure/event_publisher.py
-- [ ] T092 [US6] Implement reward serializers and views in services/reward_service/rewards/presentation/serializers.py and services/reward_service/rewards/presentation/views.py
-- [ ] T093 [US6] Wire reward endpoints in services/reward_service/rewards/presentation/urls.py and services/reward_service/reward_service/urls.py
-- [ ] T094 [US6] Build the reward dashboard and transaction UI in frontend/src/app/rewards/page.tsx and frontend/src/components/ui/RewardSummaryCard.tsx
-- [ ] T124 [US6] Configure scheduled reward-point expiration (Celery beat/periodic task) for FR-032 in services/reward_service/reward_service/celery.py and services/reward_service/rewards/application/use_cases/expire_points.py
+- [X] T088 [P] [US6] Implement reward-account and reward-transaction domain models in services/reward_service/rewards/domain/entities.py and services/reward_service/rewards/domain/repositories.py
+- [X] T089 [US6] Implement reward summary, transaction history, validate-redemption, redeem-points, credit-points, and expire-points use cases in services/reward_service/rewards/application/use_cases/get_summary.py, services/reward_service/rewards/application/use_cases/list_transactions.py, services/reward_service/rewards/application/use_cases/validate_redemption.py, services/reward_service/rewards/application/use_cases/redeem_points.py, services/reward_service/rewards/application/use_cases/credit_points.py, and services/reward_service/rewards/application/use_cases/expire_points.py
+- [X] T090 [US6] Implement reward persistence models and migrations in services/reward_service/reward_service/models.py and services/reward_service/migrations/
+- [X] T091 [P] [US6] Implement reward repository, order-confirmed consumer, and reward-points-earned publisher in services/reward_service/rewards/infrastructure/repositories.py, services/reward_service/rewards/infrastructure/event_consumers.py, and services/reward_service/rewards/infrastructure/event_publisher.py
+- [X] T092 [US6] Implement reward serializers and views in services/reward_service/rewards/presentation/serializers.py and services/reward_service/rewards/presentation/views.py
+- [X] T093 [US6] Wire reward endpoints in services/reward_service/rewards/presentation/urls.py and services/reward_service/reward_service/urls.py
+- [X] T094 [US6] Build the reward dashboard and transaction UI in frontend/src/app/rewards/page.tsx and frontend/src/components/ui/RewardSummaryCard.tsx
+- [X] T124 [US6] Configure scheduled reward-point expiration (Celery beat/periodic task) for FR-032 in services/reward_service/reward_service/celery.py and services/reward_service/rewards/application/use_cases/expire_points.py
 
 **Checkpoint**: Reward earning, redemption, history, and expiration are working.
 
