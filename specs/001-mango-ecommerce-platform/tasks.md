@@ -88,19 +88,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T029 [P] [US2] Add unit tests for product/category entities, pricing, stock state, and filter logic in services/product_service/tests/unit/test_entities.py and services/product_service/tests/unit/test_catalog_filters.py
-- [ ] T030 [US2] Add integration tests for catalog listing, search, category tree, and product detail endpoints in services/product_service/tests/integration/test_product_api.py
+- [X] T029 [P] [US2] Add unit tests for product/category entities, pricing, stock state, and filter logic in services/product_service/tests/unit/test_entities.py and services/product_service/tests/unit/test_catalog_filters.py
+- [X] T030 [US2] Add integration tests for catalog listing, search, category tree, and product detail endpoints in services/product_service/tests/integration/test_product_api.py
 
 ### Implementation for User Story 2
 
-- [ ] T031 [P] [US2] Implement product and category domain models and repository contracts in services/product_service/catalog/domain/entities.py and services/product_service/catalog/domain/repositories.py
-- [ ] T032 [US2] Implement list/search/detail/category application use cases in services/product_service/catalog/application/use_cases/list_products.py, services/product_service/catalog/application/use_cases/search_products.py, services/product_service/catalog/application/use_cases/get_product_detail.py, and services/product_service/catalog/application/use_cases/list_categories.py
-- [ ] T033 [US2] Implement catalog persistence models and migrations in services/product_service/catalog/models.py and services/product_service/migrations/
-- [ ] T034 [P] [US2] Implement catalog repository and full-text search behavior in services/product_service/catalog/infrastructure/repositories.py
-- [ ] T035 [US2] Implement product and category serializers and read-only views in services/product_service/catalog/presentation/serializers.py and services/product_service/catalog/presentation/views.py
-- [ ] T036 [US2] Wire public and internal product routes in services/product_service/catalog/presentation/urls.py and services/product_service/product_service/urls.py
-- [ ] T037 [P] [US2] Build the product listing and product detail pages in frontend/src/app/products/page.tsx and frontend/src/app/products/[slug]/page.tsx
-- [ ] T038 [US2] Build reusable catalog UI pieces and search/filter controls in frontend/src/components/products/ProductCard.tsx, frontend/src/components/products/ProductGrid.tsx, and frontend/src/components/products/ProductFilters.tsx
+- [X] T031 [P] [US2] Implement product and category domain models and repository contracts in services/product_service/catalog/domain/entities.py and services/product_service/catalog/domain/repositories.py
+- [X] T032 [US2] Implement list/search/detail/category application use cases in services/product_service/catalog/application/use_cases/list_products.py, services/product_service/catalog/application/use_cases/search_products.py, services/product_service/catalog/application/use_cases/get_product_detail.py, and services/product_service/catalog/application/use_cases/list_categories.py
+- [X] T033 [US2] Implement catalog persistence models and migrations in services/product_service/catalog/models.py and services/product_service/migrations/
+- [X] T034 [P] [US2] Implement catalog repository and full-text search behavior in services/product_service/catalog/infrastructure/repositories.py
+- [X] T035 [US2] Implement product and category serializers and read-only views in services/product_service/catalog/presentation/serializers.py and services/product_service/catalog/presentation/views.py
+- [X] T036 [US2] Wire public and internal product routes in services/product_service/catalog/presentation/urls.py and services/product_service/product_service/urls.py
+- [X] T037 [P] [US2] Build the product listing and product detail pages in frontend/src/app/products/page.tsx and frontend/src/app/products/[slug]/page.tsx
+- [X] T038 [US2] Build reusable catalog UI pieces and search/filter controls in frontend/src/components/products/ProductCard.tsx, frontend/src/components/products/ProductGrid.tsx, and frontend/src/components/products/ProductFilters.tsx
 
 **Checkpoint**: Customers can browse, search, filter, and inspect products through the gateway-backed frontend.
 
