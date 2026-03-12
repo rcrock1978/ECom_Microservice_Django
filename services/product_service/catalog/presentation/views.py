@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponseNotFound, JsonResponse
+
 from catalog.application.use_cases.get_product_detail import GetProductDetailUseCase
 from catalog.application.use_cases.list_categories import ListCategoriesUseCase
 from catalog.application.use_cases.list_products import ListProductsUseCase
@@ -58,3 +60,38 @@ class CatalogFacade:
     def list_categories(self) -> dict[str, object]:
         categories = self.list_categories_uc.execute()
         return {"status": 200, "data": [serialize_category(item) for item in categories]}
+
+
+_catalog_facade = CatalogFacade.in_memory_seeded()
+
+
+def list_products_view(request: HttpRequest) -> JsonResponse:
+    query = (request.GET.get("q") or "").strip()
+    in_stock_param = request.GET.get("in_stock")
+    in_stock: bool | None = None
+    if in_stock_param is not None:
+        in_stock = in_stock_param.lower() in {"1", "true", "yes"}
+
+    result = _catalog_facade.search_products(query=query) if query else _catalog_facade.list_products(in_stock=in_stock)
+    return JsonResponse(result)
+
+
+def product_detail_view(_: HttpRequest, slug: str) -> JsonResponse:
+    try:
+        result = _catalog_facade.get_product_detail(slug=slug)
+        return JsonResponse(result)
+    except ValueError:
+        return HttpResponseNotFound('{"detail":"Product not found"}', content_type="application/json")
+
+
+def list_categories_view(_: HttpRequest) -> JsonResponse:
+    result = _catalog_facade.list_categories()
+    return JsonResponse(result)
+
+
+def category_detail_view(_: HttpRequest, slug: str) -> JsonResponse:
+    categories = _catalog_facade.list_categories()["data"]
+    for category in categories:
+        if category.get("slug") == slug:
+            return JsonResponse({"status": 200, "data": category})
+    return HttpResponseNotFound('{"detail":"Category not found"}', content_type="application/json")

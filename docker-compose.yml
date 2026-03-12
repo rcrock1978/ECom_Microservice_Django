@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16
@@ -31,104 +29,135 @@ services:
       context: ./services/auth_service
     env_file:
       - ./services/auth_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: auth_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8001:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   product-service:
     build:
       context: ./services/product_service
     env_file:
       - ./services/product_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: product_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8002:8000"
-    deploy:
-      replicas: 3
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   cart-service:
     build:
       context: ./services/cart_service
     env_file:
       - ./services/cart_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: cart_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8003:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   order-service:
     build:
       context: ./services/order_service
     env_file:
       - ./services/order_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: order_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8004:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   coupon-service:
     build:
       context: ./services/coupon_service
     env_file:
       - ./services/coupon_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: coupon_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8005:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   reward-service:
     build:
       context: ./services/reward_service
     env_file:
       - ./services/reward_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: reward_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8006:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   email-service:
     build:
       context: ./services/email_service
     env_file:
       - ./services/email_service/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: email_service.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - postgres
       - rabbitmq
       - redis
     ports:
       - "8007:8000"
-    deploy:
-      replicas: 2
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   gateway:
     build:
       context: ./services/gateway
     env_file:
       - ./services/gateway/.env.example
+    environment:
+      DJANGO_SETTINGS_MODULE: gateway.settings
+      PYTHONPATH: /app:/app/shared:/workspace/services/email_service:/workspace/services/reward_service
     depends_on:
       - auth-service
       - product-service
@@ -140,8 +169,9 @@ services:
       - redis
     ports:
       - "8080:8000"
-    deploy:
-      replicas: 3
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./services:/workspace/services:ro
 
   frontend:
     build:
@@ -152,8 +182,6 @@ services:
       - gateway
     ports:
       - "3000:3000"
-    deploy:
-      replicas: 2
 
 volumes:
   postgres_data:

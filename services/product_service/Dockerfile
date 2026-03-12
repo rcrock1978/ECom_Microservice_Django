@@ -5,6 +5,6 @@ COPY pyproject.toml ./
 RUN pip install --upgrade pip && \
     pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --no-root --without dev
+    poetry install --no-root
 COPY . .
 CMD ["python", "-m", "django", "runserver", "0.0.0.0:8000"]

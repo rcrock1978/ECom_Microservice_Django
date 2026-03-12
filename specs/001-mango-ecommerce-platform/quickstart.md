@@ -59,26 +59,26 @@ docker compose ps
 
 ```bash
 # Run migrations for all services
-docker compose exec auth-service python manage.py migrate
-docker compose exec product-service python manage.py migrate
-docker compose exec cart-service python manage.py migrate
-docker compose exec order-service python manage.py migrate
-docker compose exec coupon-service python manage.py migrate
-docker compose exec reward-service python manage.py migrate
-docker compose exec email-service python manage.py migrate
+docker compose exec auth-service python -m django migrate
+docker compose exec product-service python -m django migrate
+docker compose exec cart-service python -m django migrate
+docker compose exec order-service python -m django migrate
+docker compose exec coupon-service python -m django migrate
+docker compose exec reward-service python -m django migrate
+docker compose exec email-service python -m django migrate
 ```
 
 ## 5. Seed Initial Data
 
 ```bash
 # Create admin user
-docker compose exec auth-service python manage.py createsuperuser
+docker compose exec auth-service python -m django createsuperuser
 
 # Seed sample products and categories
-docker compose exec product-service python manage.py seed_products
+docker compose exec product-service python -m django seed_products
 
 # Seed sample coupons
-docker compose exec coupon-service python manage.py seed_coupons
+docker compose exec coupon-service python -m django seed_coupons
 ```
 
 ## 6. Run Tests
@@ -97,6 +97,24 @@ docker compose exec email-service pytest
 docker compose exec frontend pnpm test
 ```
 
+## API Docs (Swagger / OpenAPI)
+
+After services are up, open Swagger UI at `/api/docs/`:
+
+- Gateway: http://localhost:8080/api/docs/
+- Auth: http://localhost:8001/api/docs/
+- Product: http://localhost:8002/api/docs/
+- Cart: http://localhost:8003/api/docs/
+- Order: http://localhost:8004/api/docs/
+- Coupon: http://localhost:8005/api/docs/
+- Reward: http://localhost:8006/api/docs/
+- Email: http://localhost:8007/api/docs/
+
+OpenAPI schema and ReDoc are also available per service:
+
+- `GET /api/schema/`
+- `GET /api/redoc/`
+
 ## 7. Local Development (Without Docker)
 
 For working on a single service:
@@ -105,7 +123,11 @@ For working on a single service:
 # Backend service (e.g., product-service)
 cd services/product_service
 poetry install
-poetry run python manage.py runserver 8002
+poetry run python -m django runserver 8002 --settings product_service.settings
+
+# Verify local service (root `/` returns Not Found by design)
+# http://127.0.0.1:8002/health/
+# http://127.0.0.1:8002/api/v1/products/
 
 # Frontend
 cd frontend
