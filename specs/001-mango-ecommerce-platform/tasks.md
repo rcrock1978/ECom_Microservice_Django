@@ -1,371 +1,329 @@
 # Tasks: Mango Microservices E-Commerce Platform
 
 **Input**: Design documents from `/specs/001-mango-ecommerce-platform/`
-**Prerequisites**: plan.md (required), spec.md (required), research.md, data-model.md, contracts/, quickstart.md
+**Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/, quickstart.md
 
-**Tests**: Included per Constitution Principle III (Test-First Development, NON-NEGOTIABLE). Test tasks appear BEFORE implementation in each user story phase. Tests MUST be written first and verified to FAIL before implementing the production code. Minimum 80% code coverage per service.
+**Tests**: Included. The specification and constitution require test-first delivery, so each user story contains test tasks that should be written and made to fail before implementation.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+**Organization**: Tasks are grouped by user story so each slice can be implemented and validated independently.
 
 ## Format: `[ID] [P?] [Story] Description`
 
-- **[P]**: Can run in parallel (different files, no dependencies on in-progress tasks)
-- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
-- Include exact file paths in descriptions
-
-## Path Conventions
-
-- **Backend services**: `services/{service_name}/`
-- **Shared library**: `shared/`
-- **Frontend**: `frontend/src/`
-- Each backend service follows Clean Architecture layers: `domain/`, `application/`, `infrastructure/`, `presentation/`
-- Domain layer has **ZERO Django imports** — plain Python dataclasses only
+- **[P]**: Parallelizable task with no dependency on another incomplete task in the same phase
+- **[Story]**: User story label (`[US1]`, `[US2]`, etc.)
+- Every task includes exact file paths or target directories
 
 ---
 
-## Phase 1: Setup (Shared Infrastructure)
+## Phase 1: Setup
 
-**Purpose**: Create the monorepo structure, initialize all projects, and configure the containerized development environment.
+**Purpose**: Align the repository structure, environment files, and container/runtime scaffolding with the implementation plan.
 
-- [ ] T001 Create monorepo directory structure per plan.md project tree (services/, shared/, frontend/, specs/, docker/)
-- [ ] T002 [P] Create root docker-compose.yml with PostgreSQL 16, RabbitMQ 3.13 (management), Redis 7, and pgAdmin in docker-compose.yml
-- [ ] T003 [P] Create environment variable templates for all services in .env.example and services/*/.env.example
-- [ ] T004 [P] Initialize shared library package with Poetry in shared/pyproject.toml (message_bus, common, testing subpackages)
-- [ ] T005 Initialize all 8 Django service projects with Poetry, manage.py, settings, and WSGI/ASGI in services/*/pyproject.toml
-- [ ] T006 [P] Initialize Next.js 14 frontend project with pnpm, TypeScript 5.x, and App Router in frontend/package.json
-- [ ] T007 [P] Create multi-stage Dockerfile for Django services (shared base) in services/*/Dockerfile
-- [ ] T008 [P] Create multi-stage Dockerfile for Next.js frontend in frontend/Dockerfile
-- [ ] T009 Add all application services (8 Django + 1 Next.js + Celery workers) to docker-compose.yml
-- [ ] T010 [P] Create root README.md with project overview, architecture summary, and quickstart reference
+- [X] T001 Align local development orchestration for all services, frontend, PostgreSQL, RabbitMQ, and Redis in docker-compose.yml
+- [X] T002 [P] Add shared environment templates for root and each service in .env.example, services/auth_service/.env.example, services/product_service/.env.example, services/cart_service/.env.example, services/coupon_service/.env.example, services/order_service/.env.example, services/reward_service/.env.example, services/email_service/.env.example, and services/gateway/.env.example
+- [X] T003 [P] Create missing shared utility package structure in shared/common/__init__.py, shared/common/config.py, and shared/common/logging_config.py
+- [X] T004 [P] Create missing layer package scaffolding for cart, coupon, order, reward, email, and gateway services in services/cart_service/cart/application/__init__.py, services/cart_service/cart/infrastructure/__init__.py, services/cart_service/cart/presentation/__init__.py, services/coupon_service/coupons/application/__init__.py, services/coupon_service/coupons/infrastructure/__init__.py, services/coupon_service/coupons/presentation/__init__.py, services/order_service/orders/application/__init__.py, services/order_service/orders/infrastructure/__init__.py, services/order_service/orders/presentation/__init__.py, services/reward_service/rewards/application/__init__.py, services/reward_service/rewards/infrastructure/__init__.py, services/reward_service/rewards/presentation/__init__.py, services/email_service/emails/application/__init__.py, services/email_service/emails/infrastructure/__init__.py, services/email_service/emails/presentation/__init__.py, services/gateway/gateway/application/__init__.py, services/gateway/gateway/domain/__init__.py, services/gateway/gateway/infrastructure/__init__.py, and services/gateway/gateway/presentation/__init__.py
+- [X] T005 [P] Standardize Python dependency declarations for shared libraries, Celery, DRF, Redis, and pytest across services in pyproject.toml, services/auth_service/pyproject.toml, services/product_service/pyproject.toml, services/cart_service/pyproject.toml, services/coupon_service/pyproject.toml, services/order_service/pyproject.toml, services/reward_service/pyproject.toml, services/email_service/pyproject.toml, and services/gateway/pyproject.toml
+- [X] T006 [P] Align frontend workspace scripts and dependencies for Next.js testing and linting in frontend/package.json and pnpm-workspace.yaml
+- [X] T007 [P] Update service and frontend container build definitions in services/auth_service/Dockerfile, services/product_service/Dockerfile, services/cart_service/Dockerfile, services/coupon_service/Dockerfile, services/order_service/Dockerfile, services/reward_service/Dockerfile, services/email_service/Dockerfile, services/gateway/Dockerfile, and frontend/Dockerfile
+- [X] T008 Add repository quickstart and architecture entrypoints to README.md and confirm the launch sequence remains consistent with specs/001-mango-ecommerce-platform/quickstart.md
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 2: Foundational
 
-**Purpose**: Implement shared library, base configurations, and infrastructure code that ALL user stories depend on.
+**Purpose**: Build shared infrastructure that blocks all user stories until complete.
 
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete.
+**⚠️ CRITICAL**: No user story work should start until this phase is finished.
 
-- [ ] T011 Implement event envelope and base event classes (BaseEvent, EventEnvelope with correlation_id, timestamp, routing_key) in shared/message_bus/events.py
-- [ ] T012 [P] Implement Celery task publisher with publisher confirms and serialization in shared/message_bus/publisher.py
-- [ ] T013 [P] Implement base consumer with idempotency check (ProcessedEvent) and exponential backoff retry in shared/message_bus/consumer.py
-- [ ] T014 [P] Implement standard exception types (NotFoundError, ValidationError, ConflictError, UnauthorizedError, ForbiddenError) in shared/common/exceptions.py
-- [ ] T015 [P] Implement consistent API response helpers (success_response, error_response, paginated_response) in shared/common/responses.py
-- [ ] T016 [P] Implement correlation ID middleware and structured JSON logging configuration in shared/common/middleware.py
-- [ ] T017 [P] Implement shared test utilities (base model factory, API test case mixin, event test helpers) in shared/testing/factories.py and shared/testing/fixtures.py
-- [ ] T018 Configure base Django settings module for all services (DATABASE per schema, CACHES with Redis, CELERY_BROKER, INSTALLED_APPS, shared lib as editable dep) in services/*/config/settings.py
-- [ ] T019 [P] Configure DRF defaults (PageNumberPagination, JWT authentication class, custom exception handler, JSON renderer) per service in services/*/config/settings.py
-- [ ] T020 [P] Create ProcessedEvent Django model for idempotent message consumption in shared/common/models.py
-- [ ] T021 [P] Create health check endpoint mixin (liveness + readiness with DB/Redis/RabbitMQ checks) in shared/common/health.py
-- [ ] T022 [P] Configure Celery app with RabbitMQ broker, task serialization, and result backend per service in services/*/config/celery.py
-- [ ] T023 [P] Create frontend TypeScript type definitions (User, Product, Category, Cart, Order, Coupon, Reward, ApiResponse, PaginatedResponse) in frontend/src/types/
-- [ ] T024 [P] Create frontend API client (fetch wrapper with httpOnly cookie auth, error handling, base URL config) in frontend/src/lib/api/client.ts
-- [ ] T025 [P] Create frontend auth context provider (login/logout/register, current user state, token refresh) in frontend/src/lib/auth/context.tsx
-- [ ] T026 [P] Create frontend cart context provider (cart state, add/remove/update, item count badge) in frontend/src/lib/cart/context.tsx
-- [ ] T027 [P] Create frontend layout components (Header with nav/auth/cart, Footer, MainLayout) in frontend/src/components/layout/
-- [ ] T028 Create frontend root layout with providers, global styles, and metadata in frontend/src/app/layout.tsx
+- [X] T009 Implement the shared event envelope and typed base event contracts in shared/message_bus/events.py
+- [X] T010 [P] Implement message publishing with durable routing-key support in shared/message_bus/bus.py and shared/message_bus/publisher.py
+- [X] T011 [P] Implement idempotent consumer helpers, retry policy, and dead-letter routing support in shared/message_bus/consumer.py and shared/message_bus/dlq.py
+- [X] T012 [P] Implement shared exception and response helpers in shared/common/exceptions.py and shared/common/responses.py
+- [X] T013 [P] Implement shared configuration loading and structured logging helpers in shared/common/config.py and shared/common/logging_config.py
+- [X] T014 [P] Configure Django settings, DRF defaults, Redis, and Celery bootstrap across services in services/auth_service/auth_service/settings.py, services/product_service/product_service/settings.py, services/cart_service/cart_service/settings.py, services/coupon_service/coupon_service/settings.py, services/order_service/order_service/settings.py, services/reward_service/reward_service/settings.py, services/email_service/email_service/settings.py, services/gateway/gateway/settings.py, services/auth_service/auth_service/celery.py, services/product_service/product_service/celery.py, services/cart_service/cart_service/celery.py, services/coupon_service/coupon_service/celery.py, services/order_service/order_service/celery.py, services/reward_service/reward_service/celery.py, services/email_service/email_service/celery.py, and services/gateway/gateway/celery.py
+- [X] T015 [P] Add shared health-check utilities and service health views in shared/common/health.py, services/auth_service/health.py, services/product_service/health.py, services/cart_service/health.py, services/coupon_service/health.py, services/order_service/health.py, services/reward_service/health.py, services/email_service/health.py, and services/gateway/health.py
+- [X] T016 [P] Build shared pytest factories and reusable service fixtures in shared/testing/__init__.py, shared/testing/factories.py, and shared/testing/fixtures.py
+- [X] T017 [P] Build the frontend API client and shared response types in frontend/src/lib/api/client.ts, frontend/src/lib/api/index.ts, and frontend/src/types/index.ts
+- [X] T018 [P] Build the frontend auth/cart providers and application shell in frontend/src/lib/auth/context.tsx, frontend/src/lib/cart/context.tsx, frontend/src/components/layout/Header.tsx, frontend/src/components/layout/Footer.tsx, and frontend/src/app/layout.tsx
+- [X] T118 [P] Generate and validate initial OpenAPI contracts for all gateway-exposed services before story implementation in specs/001-mango-ecommerce-platform/contracts/, services/auth_service/auth_service/settings.py, services/product_service/product_service/settings.py, services/cart_service/cart_service/settings.py, services/coupon_service/coupon_service/settings.py, services/order_service/order_service/settings.py, services/reward_service/reward_service/settings.py, services/email_service/email_service/settings.py, and services/gateway/gateway/settings.py
 
-**Checkpoint**: Foundation ready — shared library, base configs, and frontend scaffolding complete. User story implementation can now begin.
+**Checkpoint**: Shared transport, config, logging, testing, and frontend shell are ready. Story work can now begin.
 
 ---
 
-## Phase 3: User Story 9 — API Gateway Routing and Cross-Cutting Concerns (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - User Registration and Authentication (Priority: P1) 🎯 MVP
 
-**Goal**: All frontend requests route through a single API Gateway that validates JWT tokens, enforces rate limits, injects user context headers, and provides unified error responses.
+**Goal**: Let customers and admins register, log in, refresh sessions, log out, and reset passwords with lockout protection and JWT-backed sessions.
 
-**Independent Test**: Send requests to gateway endpoints and verify correct routing to target services, that unauthenticated requests to protected routes return 401, and that rate limits return 429.
+**Independent Test**: Register a new user, log in, verify cookies/session state, retrieve the current profile, trigger password reset, and confirm lockout after five failed logins.
 
-### Tests for User Story 9 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 1
 
-- [ ] T139 [P] [US9] Unit tests for JWT token validation and rate limiting rules in services/gateway/tests/unit/test_jwt_validator.py and test_rate_limiter.py
-- [ ] T140 [US9] Integration tests for proxy routing, auth rejection (401), and rate limit enforcement (429) in services/gateway/tests/integration/test_proxy.py
-
-### Implementation for User Story 9
-
-- [ ] T029 [US9] Create gateway domain layer: route configuration mapping (prefix → service URL, auth required flag) in services/gateway/gateway/domain/routes.py
-- [ ] T030 [P] [US9] Create rate limit rule definitions (per-route limits: 20/min auth, 100/min products, 60/min cart, 30/min orders) in services/gateway/gateway/domain/rate_limits.py
-- [ ] T031 [US9] Implement proxy use case (match route, check auth, check rate limit, forward request, return response) in services/gateway/gateway/application/proxy.py
-- [ ] T032 [P] [US9] Implement service health aggregator use case (check all downstream services) in services/gateway/gateway/application/health.py
-- [ ] T033 [US9] Implement httpx async proxy client with configurable timeouts and circuit breaker in services/gateway/gateway/infrastructure/proxy_client.py
-- [ ] T034 [P] [US9] Implement JWT token validation (decode access_token cookie, verify signature/expiry, extract user_id/role/email) in services/gateway/gateway/infrastructure/jwt_validator.py
-- [ ] T035 [P] [US9] Implement Redis-based sliding window rate limiter in services/gateway/gateway/infrastructure/rate_limiter.py
-- [ ] T036 [US9] Create gateway middleware stack (correlation ID injection, auth validation, rate limiting, request/response logging) in services/gateway/gateway/presentation/middleware.py
-- [ ] T037 [US9] Create gateway catch-all proxy view that handles all /api/v1/* requests in services/gateway/gateway/presentation/views.py
-- [ ] T038 [US9] Configure gateway URL routing and Django settings in services/gateway/gateway/presentation/urls.py and services/gateway/config/urls.py
-
-**Checkpoint**: Gateway proxies requests to backend services with JWT validation, rate limiting, and header injection (X-User-ID, X-User-Role, X-User-Email, X-Request-ID).
-
----
-
-## Phase 4: User Story 1 — User Registration and Authentication (Priority: P1) 🎯 MVP
-
-**Goal**: Users can register with name/email/password, log in to receive secure JWT session cookies, refresh tokens, reset passwords, and admins get elevated access.
-
-**Independent Test**: Register a new user, log in, verify httpOnly JWT cookie is set, access GET /auth/me, log out, verify session is invalidated. Test account lockout after 5 failed attempts.
-
-### Tests for User Story 1 (Write FIRST — must FAIL before implementation)
-
-- [ ] T141 [P] [US1] Unit tests for User entity, Email/Password value objects, and account lockout logic in services/auth_service/tests/unit/test_entities.py and test_use_cases.py
-- [ ] T142 [US1] Integration tests for register, login, refresh, logout, me, forgot-password, reset-password endpoints in services/auth_service/tests/integration/test_auth_api.py
+- [ ] T019 [P] [US1] Add domain and use-case unit tests for user validation, password rules, refresh token rotation, and lockout behavior in services/auth_service/tests/unit/test_entities.py and services/auth_service/tests/unit/test_use_cases.py
+- [ ] T020 [US1] Add API integration tests for register, login, refresh, logout, me, forgot-password, and reset-password flows in services/auth_service/tests/integration/test_auth_api.py
 
 ### Implementation for User Story 1
 
-- [ ] T039 [P] [US1] Create auth domain layer (User entity dataclass, Email/Password/Role value objects, UserRepository ABC, UserRegistered/PasswordResetRequested events) in services/auth_service/auth/domain/
-- [ ] T040 [US1] Implement auth application use cases (RegisterUser, LoginUser, RefreshToken, LogoutUser, GetProfile, ForgotPassword, ResetPassword) with account lockout logic in services/auth_service/auth/application/
-- [ ] T041 [US1] Create auth Django ORM models (User with Argon2 password, RefreshToken with hash) and generate migrations in services/auth_service/auth/infrastructure/models.py
-- [ ] T042 [P] [US1] Implement DjangoUserRepository (CRUD, find_by_email, increment_failed_attempts, lock/unlock) in services/auth_service/auth/infrastructure/repositories.py
-- [ ] T043 [P] [US1] Implement JWT provider (issue access token 15min, refresh token 7d, httpOnly Secure SameSite=Lax cookies) in services/auth_service/auth/infrastructure/jwt_provider.py
-- [ ] T044 [US1] Implement event publisher for user.registered and user.password_reset_requested events in services/auth_service/auth/infrastructure/event_publisher.py
-- [ ] T045 [US1] Create DRF serializers (RegisterSerializer, LoginSerializer, TokenRefreshSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, UserProfileSerializer) in services/auth_service/auth/presentation/serializers.py
-- [ ] T046 [US1] Create DRF views (RegisterView, LoginView, RefreshView, LogoutView, MeView, ForgotPasswordView, ResetPasswordView) in services/auth_service/auth/presentation/views.py
-- [ ] T047 [US1] Configure auth service URL routing (all /auth/* endpoints) in services/auth_service/auth/presentation/urls.py and services/auth_service/config/urls.py
-- [ ] T048 [P] [US1] Create frontend login page (email/password form, validation, error display, redirect on success) in frontend/src/app/(auth)/login/page.tsx
-- [ ] T049 [P] [US1] Create frontend register page (name/email/password form, validation, success message, redirect to login) in frontend/src/app/(auth)/register/page.tsx
-- [ ] T050 [P] [US1] Create frontend forgot-password page and reset-password page (email form, token-based reset form) in frontend/src/app/(auth)/forgot-password/page.tsx and frontend/src/app/(auth)/reset-password/page.tsx
-- [ ] T051 [US1] Wire frontend auth pages to API client, update auth context on login/logout, add protected route wrapper in frontend/src/lib/auth/
+- [ ] T021 [P] [US1] Implement auth domain entities, value objects, and domain events in services/auth_service/auth/domain/entities.py and services/auth_service/auth/domain/value_objects.py
+- [ ] T022 [US1] Implement registration, login, refresh, logout, profile, forgot-password, and reset-password use cases in services/auth_service/auth/application/use_cases/register_user.py, services/auth_service/auth/application/use_cases/login_user.py, services/auth_service/auth/application/use_cases/refresh_token.py, services/auth_service/auth/application/use_cases/logout_user.py, services/auth_service/auth/application/use_cases/get_profile.py, services/auth_service/auth/application/use_cases/forgot_password.py, and services/auth_service/auth/application/use_cases/reset_password.py
+- [ ] T023 [US1] Implement persistence models and migrations for users and refresh tokens in services/auth_service/auth_service/models.py and services/auth_service/auth_service/migrations/
+- [ ] T024 [P] [US1] Implement repository, password hashing, and token services in services/auth_service/auth/infrastructure/repositories.py, services/auth_service/auth/application/crypto.py, and services/auth_service/auth/application/jwt_utils.py
+- [ ] T025 [US1] Implement auth serializers and views in services/auth_service/auth/presentation/serializers.py and services/auth_service/auth/presentation/views.py
+- [ ] T026 [US1] Wire auth endpoints and service URLs in services/auth_service/auth/presentation/urls.py and services/auth_service/auth_service/urls.py
+- [ ] T027 [P] [US1] Build login, register, forgot-password, and reset-password pages in frontend/src/app/(auth)/login/page.tsx, frontend/src/app/(auth)/register/page.tsx, frontend/src/app/(auth)/forgot-password/page.tsx, and frontend/src/app/(auth)/reset-password/page.tsx
+- [ ] T028 [US1] Connect frontend auth pages to the shared API/auth context and protected-route behavior in frontend/src/lib/auth/context.tsx and frontend/src/components/layout/Header.tsx
+- [ ] T119 [US1] Implement and verify registration/password-reset email delivery path required by US1 acceptance in services/auth_service/auth/infrastructure/event_publisher.py, services/email_service/emails/infrastructure/event_consumers.py, and services/email_service/emails/infrastructure/templates/
+- [ ] T120 [US1] Add integration coverage for registration/password-reset side effects (email queued and sent) in services/auth_service/tests/integration/test_auth_email_flow.py and services/email_service/tests/integration/test_auth_events.py
 
-**Checkpoint**: Users can register, log in (JWT cookies set), access protected profile endpoint, and reset passwords. Frontend auth flow is complete through the gateway.
+**Checkpoint**: Registration, login, session refresh, logout, profile lookup, and password reset work end to end.
 
 ---
 
-## Phase 5: User Story 2 — Browse and Search Product Catalog (Priority: P1) 🎯 MVP
+## Phase 4: User Story 2 - Browse and Search Product Catalog (Priority: P1) 🎯 MVP
 
-**Goal**: Shoppers browse a categorized product catalog with pagination, search by keyword (full-text), filter by category/price/stock, and view detailed product pages.
+**Goal**: Expose a searchable, filterable product catalog with category browsing and product detail pages.
 
-**Independent Test**: Load storefront, verify product listings render with images/prices, search for a keyword, filter by category, navigate to product detail page and verify all fields display.
+**Independent Test**: Load the storefront, search by keyword, filter by category and stock, and open a product detail page.
 
-### Tests for User Story 2 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 2
 
-- [ ] T143 [P] [US2] Unit tests for Product/Category entities and search/filter domain logic in services/product_service/tests/unit/test_entities.py
-- [ ] T144 [US2] Integration tests for product list/search/filter, category tree, and internal product lookup endpoints in services/product_service/tests/integration/test_product_api.py
+- [ ] T029 [P] [US2] Add unit tests for product/category entities, pricing, stock state, and filter logic in services/product_service/tests/unit/test_entities.py and services/product_service/tests/unit/test_catalog_filters.py
+- [ ] T030 [US2] Add integration tests for catalog listing, search, category tree, and product detail endpoints in services/product_service/tests/integration/test_product_api.py
 
 ### Implementation for User Story 2
 
-- [ ] T052 [P] [US2] Create product domain layer (Product entity, Category entity, ProductRepository ABC, CategoryRepository ABC) in services/product_service/catalog/domain/
-- [ ] T053 [US2] Implement product application use cases (ListProducts with filtering/sorting, SearchProducts full-text, GetProductBySlug, ListCategories tree) in services/product_service/catalog/application/
-- [ ] T054 [US2] Create product Django ORM models (Product with full-text index, Category with self-referential parent) and generate migrations in services/product_service/catalog/infrastructure/models.py
-- [ ] T055 [P] [US2] Implement DjangoProductRepository with full-text search (SearchVector/SearchRank), filtering, and pagination in services/product_service/catalog/infrastructure/repositories.py
-- [ ] T056 [P] [US2] Implement DjangoCategoryRepository with nested tree traversal (max 3 levels) in services/product_service/catalog/infrastructure/repositories.py
-- [ ] T057 [US2] Create DRF serializers (ProductListSerializer, ProductDetailSerializer, CategorySerializer, CategoryTreeSerializer) in services/product_service/catalog/presentation/serializers.py
-- [ ] T058 [US2] Create DRF views (ProductListView with query filters, ProductDetailView by slug, CategoryListView, InternalProductView by UUID) in services/product_service/catalog/presentation/views.py
-- [ ] T059 [US2] Configure product service URL routing (/products/*, /categories/*, /internal/products/*) in services/product_service/catalog/presentation/urls.py and services/product_service/config/urls.py
-- [ ] T060 [P] [US2] Create frontend product catalog page (product grid, category sidebar, search bar, pagination controls) in frontend/src/app/products/page.tsx
-- [ ] T061 [P] [US2] Create frontend product detail page (images, description, price, availability, Add to Cart button) in frontend/src/app/products/[slug]/page.tsx
-- [ ] T062 [P] [US2] Create frontend product card and product grid reusable components in frontend/src/components/products/ProductCard.tsx and ProductGrid.tsx
-- [ ] T063 [US2] Create seed data management command with sample products (10+) and categories (5+) in services/product_service/catalog/management/commands/seed_products.py
+- [ ] T031 [P] [US2] Implement product and category domain models and repository contracts in services/product_service/catalog/domain/entities.py and services/product_service/catalog/domain/repositories.py
+- [ ] T032 [US2] Implement list/search/detail/category application use cases in services/product_service/catalog/application/use_cases/list_products.py, services/product_service/catalog/application/use_cases/search_products.py, services/product_service/catalog/application/use_cases/get_product_detail.py, and services/product_service/catalog/application/use_cases/list_categories.py
+- [ ] T033 [US2] Implement catalog persistence models and migrations in services/product_service/catalog/models.py and services/product_service/migrations/
+- [ ] T034 [P] [US2] Implement catalog repository and full-text search behavior in services/product_service/catalog/infrastructure/repositories.py
+- [ ] T035 [US2] Implement product and category serializers and read-only views in services/product_service/catalog/presentation/serializers.py and services/product_service/catalog/presentation/views.py
+- [ ] T036 [US2] Wire public and internal product routes in services/product_service/catalog/presentation/urls.py and services/product_service/product_service/urls.py
+- [ ] T037 [P] [US2] Build the product listing and product detail pages in frontend/src/app/products/page.tsx and frontend/src/app/products/[slug]/page.tsx
+- [ ] T038 [US2] Build reusable catalog UI pieces and search/filter controls in frontend/src/components/products/ProductCard.tsx, frontend/src/components/products/ProductGrid.tsx, and frontend/src/components/products/ProductFilters.tsx
 
-**Checkpoint**: Product catalog is browsable with search, category filtering, and detail pages working end-to-end through the gateway. Seed data available.
+**Checkpoint**: Customers can browse, search, filter, and inspect products through the gateway-backed frontend.
 
 ---
 
-## Phase 6: User Story 10 — Asynchronous Inter-Service Messaging (Priority: P2)
+## Phase 5: User Story 9 - API Gateway Routing and Cross-Cutting Concerns (Priority: P1) 🎯 MVP
 
-**Goal**: Services communicate asynchronously via domain events on RabbitMQ with topic exchange routing. Events are published reliably with at-least-once delivery and consumed idempotently.
+**Goal**: Route all frontend API traffic through a single gateway that validates authentication, injects user context, enforces rate limits, and normalizes errors.
 
-**Independent Test**: Publish a test event from one service and verify it is consumed by target service(s) without synchronous coupling. Verify dead-letter queues capture messages that fail after 3 retries.
+**Independent Test**: Send requests to `/api/v1/*` routes and verify correct upstream routing, 401 handling for protected routes, 429 handling for rate limits, and 503 handling for unavailable services.
 
-### Tests for User Story 10 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 9
 
-- [ ] T145 [US10] Integration test for event publish-consume round trip, idempotency deduplication, and DLQ routing in shared/testing/test_message_bus.py
+- [ ] T039 [P] [US9] Add gateway unit tests for route matching, JWT validation, and rate-limit rules in services/gateway/tests/unit/test_routes.py, services/gateway/tests/unit/test_jwt_validator.py, and services/gateway/tests/unit/test_rate_limiter.py
+- [ ] T040 [US9] Add gateway integration tests for proxy forwarding, auth rejection, upstream failure handling, and header injection in services/gateway/tests/integration/test_proxy.py
 
-### Implementation for User Story 10
+### Implementation for User Story 9
 
-- [ ] T064 [US10] Define all 8 event types with routing keys and typed payload dataclasses (auth.user.registered, auth.user.password_reset_requested, order.order.confirmed, order.order.status_changed, order.payment.completed, order.payment.failed, product.inventory.low_stock, reward.points.earned) in shared/message_bus/events.py
-- [ ] T065 [P] [US10] Configure RabbitMQ exchanges (mango.events topic durable, mango.dlx dead-letter fanout) and connection settings in shared/message_bus/config.py
-- [ ] T066 [US10] Create queue binding declarations mapping routing keys to consumer queues per service (email.events, reward.events, product.events) in shared/message_bus/bindings.py
-- [ ] T067 [P] [US10] Create Celery worker entry points and task registration per consuming service (product, reward, email) in services/*/config/celery.py
-- [ ] T068 [P] [US10] Create ProcessedEvent migration for each consuming service (product_service, reward_service, email_service) in services/*/migrations/
-- [ ] T069 [US10] Implement dead-letter queue consumer and admin monitoring helpers in shared/message_bus/dlq.py
+- [ ] T041 [P] [US9] Implement route maps and rate-limit definitions in services/gateway/gateway/domain/routes.py and services/gateway/gateway/domain/rate_limits.py
+- [ ] T042 [US9] Implement proxy orchestration and service health aggregation use cases in services/gateway/gateway/application/proxy_request.py and services/gateway/gateway/application/health_summary.py
+- [ ] T043 [P] [US9] Implement async upstream HTTP client and service registry helpers in services/gateway/gateway/infrastructure/http_client.py and services/gateway/routing.py
+- [ ] T044 [P] [US9] Implement JWT validation and Redis-backed throttling services in services/gateway/gateway/infrastructure/jwt_validator.py and services/gateway/gateway/infrastructure/rate_limiter.py
+- [ ] T045 [US9] Implement request middleware for correlation ID, auth, throttling, and logging in services/gateway/gateway/presentation/middleware/request_context.py and services/gateway/gateway/presentation/middleware/auth.py
+- [ ] T046 [US9] Implement gateway proxy and health views in services/gateway/gateway/presentation/views.py
+- [ ] T047 [US9] Wire gateway URLs and upstream route exposure in services/gateway/gateway/presentation/urls.py and services/gateway/gateway/urls.py
+- [ ] T048 [US9] Point the frontend API base configuration to the gateway and handle normalized gateway errors in frontend/src/lib/api/client.ts and frontend/src/types/index.ts
 
-**Checkpoint**: Message bus infrastructure is operational — publish, consume, retry, and DLQ flows are verified.
+**Checkpoint**: The frontend talks only to the gateway, and the gateway correctly handles routing, auth, rate limiting, and service errors.
 
 ---
 
-## Phase 7: User Story 3 — Shopping Cart Management (Priority: P2)
+## Phase 6: User Story 3 - Shopping Cart Management (Priority: P2)
 
-**Goal**: Logged-in users add products to a persistent cart, update quantities, remove items, apply/remove coupons, and see running subtotals. Cart persists across sessions.
+**Goal**: Let authenticated users maintain a persistent cart, update quantities, remove items, and preview coupon effects.
 
-**Independent Test**: Log in, add multiple products to cart, update quantity, remove an item, verify subtotal recalculates, log out, log back in, verify cart is preserved.
+**Independent Test**: Add items to cart, update quantities, remove an item, log out and back in, and confirm the cart is preserved.
 
-### Tests for User Story 3 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 3
 
-- [ ] T146 [P] [US3] Unit tests for Cart entity, item quantity validation, max 50 items limit, and subtotal calculation in services/cart_service/tests/unit/test_entities.py
-- [ ] T147 [US3] Integration tests for cart CRUD, coupon application/removal, and product price refresh in services/cart_service/tests/integration/test_cart_api.py
+- [ ] T049 [P] [US3] Add cart domain and use-case unit tests for quantity validation, subtotal calculation, and cart limits in services/cart_service/tests/unit/test_entities.py and services/cart_service/tests/unit/test_use_cases.py
+- [ ] T050 [US3] Add cart integration tests for get/add/update/remove/apply-coupon/remove-coupon flows in services/cart_service/tests/integration/test_cart_api.py
 
 ### Implementation for User Story 3
 
-- [ ] T070 [P] [US3] Create cart domain layer (Cart entity, CartItem entity, CartRepository ABC, validation rules: max 50 items, quantity >= 1) in services/cart_service/cart/domain/
-- [ ] T071 [US3] Implement cart application use cases (GetOrCreateCart, AddItem, UpdateItemQuantity, RemoveItem, ClearCart, ApplyCoupon, RemoveCoupon; auto re-validate applied coupon on every cart change per FR-021) in services/cart_service/cart/application/
-- [ ] T072 [US3] Create cart Django ORM models (Cart with unique user_id, CartItem with unique cart+product) and generate migrations in services/cart_service/cart/infrastructure/models.py
-- [ ] T073 [P] [US3] Implement DjangoCartRepository in services/cart_service/cart/infrastructure/repositories.py
-- [ ] T074 [US3] Implement product price refresh client (httpx GET to Product service /internal/products/{id}) in services/cart_service/cart/infrastructure/product_client.py
-- [ ] T075 [P] [US3] Implement coupon validation client (httpx POST to Coupon service /coupons/validate) in services/cart_service/cart/infrastructure/coupon_client.py
-- [ ] T076 [US3] Create DRF serializers (CartSerializer, CartItemSerializer, AddItemSerializer, UpdateQuantitySerializer, ApplyCouponSerializer) in services/cart_service/cart/presentation/serializers.py
-- [ ] T077 [US3] Create DRF views (CartView GET/DELETE, CartItemView POST/PUT/DELETE, CartCouponView POST/DELETE) in services/cart_service/cart/presentation/views.py
-- [ ] T078 [US3] Configure cart service URL routing (/cart/*, /cart/items/*, /cart/coupon/*) in services/cart_service/cart/presentation/urls.py and services/cart_service/config/urls.py
-- [ ] T079 [P] [US3] Create frontend cart page (item list, quantity controls, remove button, subtotal, coupon input) and cart drawer component in frontend/src/app/cart/page.tsx and frontend/src/components/cart/
-- [ ] T080 [US3] Integrate cart UI with cart context provider and wire Add to Cart button on product pages in frontend/src/lib/cart/
+- [ ] T051 [P] [US3] Implement cart and cart-item domain models and repository contracts in services/cart_service/cart/domain/entities.py and services/cart_service/cart/domain/repositories.py
+- [ ] T052 [US3] Implement cart use cases in services/cart_service/cart/application/use_cases/get_cart.py, services/cart_service/cart/application/use_cases/add_item.py, services/cart_service/cart/application/use_cases/update_item.py, services/cart_service/cart/application/use_cases/remove_item.py, services/cart_service/cart/application/use_cases/clear_cart.py, services/cart_service/cart/application/use_cases/apply_coupon.py, and services/cart_service/cart/application/use_cases/remove_coupon.py
+- [ ] T053 [US3] Implement cart persistence models and migrations in services/cart_service/cart_service/models.py and services/cart_service/migrations/
+- [ ] T054 [P] [US3] Implement cart repository and upstream product/coupon clients in services/cart_service/cart/infrastructure/repositories.py, services/cart_service/cart/infrastructure/product_client.py, and services/cart_service/cart/infrastructure/coupon_client.py
+- [ ] T055 [US3] Implement cart serializers and views in services/cart_service/cart/presentation/serializers.py and services/cart_service/cart/presentation/views.py
+- [ ] T056 [US3] Wire cart endpoints in services/cart_service/cart/presentation/urls.py and services/cart_service/cart_service/urls.py
+- [ ] T057 [P] [US3] Build the cart page and cart drawer UI in frontend/src/app/cart/page.tsx, frontend/src/components/cart/CartDrawer.tsx, and frontend/src/components/cart/CartItemRow.tsx
+- [ ] T058 [US3] Connect product pages and cart UI to the shared cart context in frontend/src/lib/cart/context.tsx and frontend/src/app/products/[slug]/page.tsx
 
-**Checkpoint**: Cart management works end-to-end through the gateway. Items persist across sessions, prices refresh from Product service, and coupon application previews discount.
+**Checkpoint**: Cart CRUD, persistence, and subtotal updates work across sessions.
 
 ---
 
-## Phase 8: User Story 4 — Apply Coupons and Discounts (Priority: P2)
+## Phase 7: User Story 4 - Apply Coupons and Discounts (Priority: P2)
 
-**Goal**: Customers apply coupon codes for percentage or flat-amount discounts with full validation (expiry, usage limits, minimum purchase). Admins CRUD coupons.
+**Goal**: Support coupon validation and redemption with admin coupon management.
 
-**Independent Test**: Create a coupon (admin), add items to cart, apply coupon code, verify discount is reflected in total. Test expired/invalid codes show clear error messages.
+**Independent Test**: Create a coupon as admin, apply it to a cart or order subtotal, and verify correct discount or validation errors.
 
-### Tests for User Story 4 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 4
 
-- [ ] T148 [P] [US4] Unit tests for Coupon validation rules (expiry, usage limits, minimum purchase, percentage/flat discount calculation) in services/coupon_service/tests/unit/test_entities.py
-- [ ] T149 [US4] Integration tests for validate, redeem (idempotent), and admin CRUD endpoints in services/coupon_service/tests/integration/test_coupon_api.py
+- [ ] T059 [P] [US4] Add coupon domain and discount-calculation unit tests in services/coupon_service/tests/unit/test_entities.py and services/coupon_service/tests/unit/test_discount_rules.py
+- [ ] T060 [US4] Add integration tests for validate, redeem, and admin coupon CRUD endpoints in services/coupon_service/tests/integration/test_coupon_api.py
 
 ### Implementation for User Story 4
 
-- [ ] T081 [P] [US4] Create coupon domain layer (Coupon entity with validation rules, CouponUsage entity, DiscountType enum, CouponRepository ABC) in services/coupon_service/coupons/domain/
-- [ ] T082 [US4] Implement coupon application use cases (ValidateCoupon, RedeemCoupon idempotent, CreateCoupon, ListCoupons, UpdateCoupon, DeactivateCoupon) in services/coupon_service/coupons/application/
-- [ ] T083 [US4] Create coupon Django ORM models (Coupon with unique code, CouponUsage with unique coupon+order) and generate migrations in services/coupon_service/coupons/infrastructure/models.py
-- [ ] T084 [P] [US4] Implement DjangoCouponRepository in services/coupon_service/coupons/infrastructure/repositories.py
-- [ ] T085 [US4] Create DRF serializers (CouponSerializer, ValidateCouponSerializer, RedeemCouponSerializer, CouponAdminSerializer) in services/coupon_service/coupons/presentation/serializers.py
-- [ ] T086 [US4] Create DRF views (ValidateCouponView, RedeemCouponView, CouponAdminListCreateView, CouponAdminDetailView) in services/coupon_service/coupons/presentation/views.py
-- [ ] T087 [US4] Configure coupon service URL routing (/coupons/validate, /coupons/redeem, /coupons/ admin CRUD) in services/coupon_service/coupons/presentation/urls.py and services/coupon_service/config/urls.py
-- [ ] T088 [US4] Create seed data management command with sample coupons (percentage and flat, active and expired) in services/coupon_service/coupons/management/commands/seed_coupons.py
+- [ ] T061 [P] [US4] Implement coupon and coupon-usage domain models and repository contracts in services/coupon_service/coupons/domain/entities.py and services/coupon_service/coupons/domain/repositories.py
+- [ ] T062 [US4] Implement validate, redeem, create, update, list, and deactivate coupon use cases in services/coupon_service/coupons/application/use_cases/validate_coupon.py, services/coupon_service/coupons/application/use_cases/redeem_coupon.py, services/coupon_service/coupons/application/use_cases/create_coupon.py, services/coupon_service/coupons/application/use_cases/update_coupon.py, and services/coupon_service/coupons/application/use_cases/list_coupons.py
+- [ ] T063 [US4] Implement coupon persistence models and migrations in services/coupon_service/coupon_service/models.py and services/coupon_service/migrations/
+- [ ] T064 [P] [US4] Implement coupon repository logic and idempotent redemption checks in services/coupon_service/coupons/infrastructure/repositories.py
+- [ ] T065 [US4] Implement coupon serializers and views for validation, redemption, and admin CRUD in services/coupon_service/coupons/presentation/serializers.py and services/coupon_service/coupons/presentation/views.py
+- [ ] T066 [US4] Wire coupon endpoints in services/coupon_service/coupons/presentation/urls.py and services/coupon_service/coupon_service/urls.py
+- [ ] T067 [US4] Add coupon seed command for development and quickstart validation in services/coupon_service/coupons/infrastructure/management/commands/seed_coupons.py
 
-**Checkpoint**: Coupon validation and application work end-to-end through the gateway. Admin can manage coupons. Seed data available.
+**Checkpoint**: Coupon validation, redemption, and admin management are complete.
 
 ---
 
-## Phase 9: User Story 5 — Place an Order and Process Payment (Priority: P2)
+## Phase 8: User Story 10 - Asynchronous Inter-Service Messaging (Priority: P2)
 
-**Goal**: Customers checkout from cart with shipping details, pay via Stripe Checkout Sessions, receive order confirmation. Orders track full lifecycle (Pending → Confirmed → Shipped → Delivered / Cancelled). Inventory is decremented on confirmation.
+**Goal**: Provide durable event publishing and idempotent consumption across order, email, reward, and product flows.
 
-**Independent Test**: Complete full purchase flow: add items to cart → proceed to checkout → enter shipping → complete Stripe payment → verify order in history with "Confirmed" status → verify confirmation email queued.
+**Independent Test**: Publish an order confirmation event and verify consumers process it once, retries occur on failure, and unrecoverable messages land in the DLQ.
 
-### Tests for User Story 5 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 10
 
-- [ ] T150 [P] [US5] Unit tests for Order state machine transitions (PENDING→CONFIRMED→SHIPPED→DELIVERED, CANCELLED paths) and domain event generation in services/order_service/tests/unit/test_entities.py
-- [ ] T151 [US5] Integration tests for order creation orchestration, Stripe webhook, cancel, and admin status update in services/order_service/tests/integration/test_order_api.py
-- [ ] T152 [P] [US5] Contract tests for cross-service HTTP clients (CartClient, ProductClient, CouponClient, RewardClient) in services/order_service/tests/contract/test_service_clients.py
+- [ ] T068 [US10] Add message-bus integration tests for publish/consume, retry, idempotency, and dead-letter behavior in shared/testing/test_message_bus.py
+
+### Implementation for User Story 10
+
+- [ ] T069 [US10] Implement contract-specific domain event classes and payload serializers in shared/message_bus/events.py
+- [ ] T070 [P] [US10] Implement RabbitMQ exchange, queue-binding, and routing-key configuration in shared/message_bus/config.py and shared/message_bus/bindings.py
+- [ ] T071 [P] [US10] Add processed-event persistence and idempotency bookkeeping in services/product_service/catalog/infrastructure/processed_events.py, services/reward_service/rewards/infrastructure/processed_events.py, and services/email_service/emails/infrastructure/processed_events.py
+- [ ] T072 [US10] Implement consumer registration and worker bootstrap for product, reward, and email services in services/product_service/product_service/celery.py, services/reward_service/reward_service/celery.py, and services/email_service/email_service/celery.py
+- [ ] T073 [US10] Implement shared dead-letter inspection and replay helpers in shared/message_bus/dlq.py and shared/testing/fixtures.py
+
+**Checkpoint**: The event bus is ready for order, reward, email, and inventory workflows.
+
+---
+
+## Phase 9: User Story 5 - Place an Order and Process Payment (Priority: P2)
+
+**Goal**: Let users checkout from their cart, pay successfully, persist orders, update inventory, and publish follow-up events.
+
+**Independent Test**: Complete a checkout from cart to payment confirmation, then verify order history, inventory adjustment, and event publication.
+
+### Tests for User Story 5
+
+- [ ] T074 [P] [US5] Add order domain unit tests for totals, discount rules, and status transitions in services/order_service/tests/unit/test_entities.py and services/order_service/tests/unit/test_status_transitions.py
+- [ ] T075 [US5] Add order integration tests for create, detail, list, cancel, webhook, and admin status-update flows in services/order_service/tests/integration/test_order_api.py
+- [ ] T076 [P] [US5] Add contract tests for cart, product, coupon, and reward upstream clients in services/order_service/tests/contract/test_service_clients.py
 
 ### Implementation for User Story 5
 
-- [ ] T089 [P] [US5] Create order domain layer (Order entity with status state machine, OrderItem entity, OrderRepository ABC, domain events: OrderConfirmed, OrderStatusChanged, PaymentFailed) in services/order_service/orders/domain/
-- [ ] T090 [US5] Implement order application use cases (CreateOrder 6-step orchestration, ListUserOrders, GetOrderDetail, CancelOrder, HandlePaymentWebhook, AdminUpdateStatus) in services/order_service/orders/application/
-- [ ] T091 [US5] Create order Django ORM models (Order with unique order_number, OrderItem with product snapshots) and generate migrations in services/order_service/orders/infrastructure/models.py
-- [ ] T092 [P] [US5] Implement DjangoOrderRepository in services/order_service/orders/infrastructure/repositories.py
-- [ ] T093 [US5] Implement Stripe payment integration (create Checkout Session, verify webhook signature, handle payment_intent.succeeded/failed) in services/order_service/orders/infrastructure/payment_provider.py
-- [ ] T094 [P] [US5] Implement cross-service HTTP clients (CartClient, ProductClient, CouponClient for redeem, RewardClient for validate/redeem) in services/order_service/orders/infrastructure/service_clients.py
-- [ ] T095 [US5] Implement order event publisher (order.order.confirmed, order.order.status_changed, order.payment.failed) in services/order_service/orders/infrastructure/event_publisher.py
-- [ ] T096 [US5] Implement inventory decrement event consumer (order.confirmed → atomic stock decrement via F() expressions or SELECT FOR UPDATE; order.status_changed to CANCELLED → restore stock) in services/product_service/catalog/infrastructure/event_consumers.py
-- [ ] T097 [US5] Create DRF serializers (CreateOrderSerializer with shipping fields, OrderListSerializer, OrderDetailSerializer, CancelOrderSerializer, AdminStatusUpdateSerializer) in services/order_service/orders/presentation/serializers.py
-- [ ] T098 [US5] Create DRF views (CreateOrderView, OrderListView, OrderDetailView, CancelOrderView, PaymentWebhookView, AdminStatusUpdateView) in services/order_service/orders/presentation/views.py
-- [ ] T099 [US5] Configure order service URL routing (/orders/*, /orders/{order_number}/cancel, /orders/webhook/payment/, /orders/{order_number}/status/) in services/order_service/orders/presentation/urls.py and services/order_service/config/urls.py
-- [ ] T100 [P] [US5] Create frontend checkout page (shipping form, order summary with discounts, Stripe redirect button) in frontend/src/app/checkout/page.tsx
-- [ ] T101 [P] [US5] Create frontend order history page and order detail page in frontend/src/app/orders/page.tsx and frontend/src/app/orders/[orderNumber]/page.tsx
-- [ ] T102 [P] [US5] Create frontend payment callback pages (success confirmation, failure with retry option) in frontend/src/app/checkout/success/page.tsx and frontend/src/app/checkout/failure/page.tsx
+- [ ] T077 [P] [US5] Implement order and order-item domain models, status state machine, and domain events in services/order_service/orders/domain/entities.py and services/order_service/orders/domain/events.py
+- [ ] T078 [US5] Implement create-order, list-orders, get-order, cancel-order, payment-webhook, and admin status-update use cases in services/order_service/orders/application/use_cases/create_order.py, services/order_service/orders/application/use_cases/list_orders.py, services/order_service/orders/application/use_cases/get_order.py, services/order_service/orders/application/use_cases/cancel_order.py, services/order_service/orders/application/use_cases/handle_payment_webhook.py, and services/order_service/orders/application/use_cases/update_order_status.py
+- [ ] T079 [US5] Implement order persistence models and migrations in services/order_service/order_service/models.py and services/order_service/migrations/
+- [ ] T080 [P] [US5] Implement order repository and upstream service clients in services/order_service/orders/infrastructure/repositories.py and services/order_service/orders/infrastructure/service_clients.py
+- [ ] T081 [US5] Implement payment-provider integration and event publishing in services/order_service/orders/infrastructure/payment_provider.py and services/order_service/orders/infrastructure/event_publisher.py
+- [ ] T082 [US5] Implement order serializers and views in services/order_service/orders/presentation/serializers.py and services/order_service/orders/presentation/views.py
+- [ ] T083 [US5] Wire order endpoints and webhook routes in services/order_service/orders/presentation/urls.py and services/order_service/order_service/urls.py
+- [ ] T084 [P] [US5] Build checkout, order history, and order detail pages in frontend/src/app/checkout/page.tsx, frontend/src/app/orders/page.tsx, and frontend/src/app/orders/[orderNumber]/page.tsx
+- [ ] T085 [US5] Connect checkout UI to payment redirects, success/failure handling, and order retrieval in frontend/src/app/checkout/success/page.tsx, frontend/src/app/checkout/failure/page.tsx, and frontend/src/lib/api/client.ts
+- [ ] T121 [US5] Implement order timeout monitor and retry/cancel flow (default 15 minutes) for pending payments in services/order_service/orders/application/use_cases/handle_order_timeout.py and services/order_service/order_service/celery.py
+- [ ] T122 [US5] Implement required checkout side effects for confirmation email and reward credit on order confirmation in services/email_service/emails/infrastructure/event_consumers.py and services/reward_service/rewards/infrastructure/event_consumers.py
+- [ ] T123 [US5] Add end-to-end integration test for checkout -> order confirmation -> reward credit + confirmation email in services/order_service/tests/integration/test_checkout_side_effects.py
 
-**Checkpoint**: Full purchase flow works end-to-end — cart → checkout → Stripe payment → order confirmed → inventory decremented → events published.
+**Checkpoint**: A complete purchase flow works and emits the required events.
 
 ---
 
-## Phase 10: User Story 6 — Reward Points Program (Priority: P3)
+## Phase 10: User Story 6 - Reward Points Program (Priority: P3)
 
-**Goal**: Customers earn 1 reward point per $1 spent on orders. They can view balance and history, and redeem points for discounts ($0.10/point, minimum 50 points) on future orders. Points expire after 12 months.
+**Goal**: Credit, redeem, view, and expire customer reward points based on confirmed orders.
 
-**Independent Test**: Complete a purchase, verify points are credited to reward account, start new order and redeem points as discount, verify balance decreases.
+**Independent Test**: Confirm an order, verify points are credited, then redeem points on a later order and inspect reward history.
 
-### Tests for User Story 6 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 6
 
-- [ ] T153 [P] [US6] Unit tests for RewardAccount point calculations, minimum 50-point redemption, $0.10/point conversion, and 12-month expiration in services/reward_service/tests/unit/test_entities.py
-- [ ] T154 [US6] Integration tests for reward summary, transaction history, validate-redemption, redeem endpoints, and order.confirmed consumer in services/reward_service/tests/integration/test_reward_api.py
+- [ ] T086 [P] [US6] Add reward-account and redemption unit tests in services/reward_service/tests/unit/test_entities.py and services/reward_service/tests/unit/test_redemption_rules.py
+- [ ] T087 [US6] Add integration tests for reward summary, history, validate-redemption, redeem, and order-confirmed consumption in services/reward_service/tests/integration/test_reward_api.py
 
 ### Implementation for User Story 6
 
-- [ ] T103 [P] [US6] Create reward domain layer (RewardAccount entity, RewardTransaction entity, TransactionType enum, RewardRepository ABC, redemption rules: min 50 points, $0.10/point) in services/reward_service/rewards/domain/
-- [ ] T104 [US6] Implement reward application use cases (GetAccountSummary, GetTransactionHistory, ValidateRedemption, RedeemPoints, CreditPoints, ExpirePoints) in services/reward_service/rewards/application/
-- [ ] T105 [US6] Create reward Django ORM models (RewardAccount with unique user_id, RewardTransaction with idempotency constraint on account+order+type) and generate migrations in services/reward_service/rewards/infrastructure/models.py
-- [ ] T106 [P] [US6] Implement DjangoRewardRepository in services/reward_service/rewards/infrastructure/repositories.py
-- [ ] T107 [US6] Implement order.confirmed event consumer (credit 1 point per $1 of order total, set expires_at = creation + 12 months) in services/reward_service/rewards/infrastructure/event_consumers.py
-- [ ] T108 [P] [US6] Implement reward event publisher (reward.points.earned with user_id, email, points, new_balance) in services/reward_service/rewards/infrastructure/event_publisher.py
-- [ ] T109 [US6] Implement nightly points expiration batch job (find EARNED transactions past expires_at, create EXPIRED transactions, decrement balance) in services/reward_service/rewards/infrastructure/expiration_job.py
-- [ ] T110 [US6] Create DRF serializers (RewardSummarySerializer, TransactionSerializer, ValidateRedemptionSerializer, RedeemSerializer) in services/reward_service/rewards/presentation/serializers.py
-- [ ] T111 [US6] Create DRF views (RewardSummaryView, TransactionHistoryView, ValidateRedemptionView, RedeemPointsView) in services/reward_service/rewards/presentation/views.py
-- [ ] T112 [US6] Configure reward service URL routing (/rewards/, /rewards/transactions/, /rewards/validate-redemption, /rewards/redeem) in services/reward_service/rewards/presentation/urls.py and services/reward_service/config/urls.py
-- [ ] T113 [P] [US6] Create frontend rewards dashboard page (current balance, points expiring soon, transaction history table, redemption section) in frontend/src/app/rewards/page.tsx
+- [ ] T088 [P] [US6] Implement reward-account and reward-transaction domain models in services/reward_service/rewards/domain/entities.py and services/reward_service/rewards/domain/repositories.py
+- [ ] T089 [US6] Implement reward summary, transaction history, validate-redemption, redeem-points, credit-points, and expire-points use cases in services/reward_service/rewards/application/use_cases/get_summary.py, services/reward_service/rewards/application/use_cases/list_transactions.py, services/reward_service/rewards/application/use_cases/validate_redemption.py, services/reward_service/rewards/application/use_cases/redeem_points.py, services/reward_service/rewards/application/use_cases/credit_points.py, and services/reward_service/rewards/application/use_cases/expire_points.py
+- [ ] T090 [US6] Implement reward persistence models and migrations in services/reward_service/reward_service/models.py and services/reward_service/migrations/
+- [ ] T091 [P] [US6] Implement reward repository, order-confirmed consumer, and reward-points-earned publisher in services/reward_service/rewards/infrastructure/repositories.py, services/reward_service/rewards/infrastructure/event_consumers.py, and services/reward_service/rewards/infrastructure/event_publisher.py
+- [ ] T092 [US6] Implement reward serializers and views in services/reward_service/rewards/presentation/serializers.py and services/reward_service/rewards/presentation/views.py
+- [ ] T093 [US6] Wire reward endpoints in services/reward_service/rewards/presentation/urls.py and services/reward_service/reward_service/urls.py
+- [ ] T094 [US6] Build the reward dashboard and transaction UI in frontend/src/app/rewards/page.tsx and frontend/src/components/ui/RewardSummaryCard.tsx
+- [ ] T124 [US6] Configure scheduled reward-point expiration (Celery beat/periodic task) for FR-032 in services/reward_service/reward_service/celery.py and services/reward_service/rewards/application/use_cases/expire_points.py
 
-**Checkpoint**: Reward points are earned on purchase, viewable on dashboard, and redeemable at checkout. Nightly expiration job is configured.
+**Checkpoint**: Reward earning, redemption, history, and expiration are working.
 
 ---
 
-## Phase 11: User Story 7 — Transactional Email Notifications (Priority: P3)
+## Phase 11: User Story 7 - Transactional Email Notifications (Priority: P3)
 
-**Goal**: System sends asynchronous email notifications for registration, password reset, order confirmation, order status updates, payment failures, and reward milestones. Emails retry 3x with exponential backoff and dead-letter after exhaustion.
+**Goal**: Send registration, password reset, order, payment-failure, reward, and status-update emails asynchronously with retries and dead-letter handling.
+**Scope Note**: US1 covers auth-triggered email side effects required for early acceptance; US7 hardens and generalizes the full email platform (all event types, retries, dead-letter handling, and admin monitoring).
 
-**Independent Test**: Trigger each event (register, place order, earn points) and verify the corresponding email is queued, processed, and marked as SENT. Verify retry logic on SMTP failure.
+**Independent Test**: Trigger each supported event, verify email records are queued and sent, then force failures to confirm retries and dead-letter behavior.
 
-### Tests for User Story 7 (Write FIRST — must FAIL before implementation)
+### Tests for User Story 7
 
-- [ ] T155 [P] [US7] Unit tests for email template selection, retry orchestration logic, and dead-letter transition in services/email_service/tests/unit/test_use_cases.py
-- [ ] T156 [US7] Integration tests for all 6 event consumers and SMTP provider adapter (console backend) in services/email_service/tests/integration/test_email_consumers.py
+- [ ] T095 [P] [US7] Add email use-case and retry-policy unit tests in services/email_service/tests/unit/test_use_cases.py and services/email_service/tests/unit/test_retry_policy.py
+- [ ] T096 [US7] Add integration tests for event consumers, template rendering, and admin monitoring endpoints in services/email_service/tests/integration/test_email_service.py
 
 ### Implementation for User Story 7
 
-- [ ] T114 [P] [US7] Create email domain layer (EmailMessage entity, TemplateType enum: REGISTRATION/PASSWORD_RESET/ORDER_CONFIRMATION/ORDER_STATUS_UPDATE/PAYMENT_FAILED/REWARD_MILESTONE, EmailRepository ABC) in services/email_service/emails/domain/
-- [ ] T115 [US7] Implement email application use cases (ProcessEventEmail, SendEmail with retry orchestration, RetryFailedEmail) in services/email_service/emails/application/
-- [ ] T116 [US7] Create email Django ORM model (EmailMessage with status transitions, retry_count, event_id uniqueness) and generate migrations in services/email_service/emails/infrastructure/models.py
-- [ ] T117 [P] [US7] Implement DjangoEmailRepository in services/email_service/emails/infrastructure/repositories.py
-- [ ] T118 [US7] Implement SMTP email provider adapter (SendGrid/Mailgun/console backend for dev) with exponential backoff (30s→120s→480s) in services/email_service/emails/infrastructure/smtp_provider.py
-- [ ] T119 [US7] Implement all 6 event consumers (user.registered, user.password_reset_requested, order.confirmed, order.status_changed, payment.failed, reward.points_earned) in services/email_service/emails/infrastructure/event_consumers.py
-- [ ] T120 [P] [US7] Create email templates (plain text + HTML) for each TemplateType in services/email_service/emails/infrastructure/templates/
-- [ ] T121 [US7] Create admin DRF views (EmailListView with status filter, EmailRetryView for dead-letter recovery) in services/email_service/emails/presentation/views.py
-- [ ] T122 [US7] Configure email service URL routing (/emails/ admin list, /emails/{id}/retry) in services/email_service/emails/presentation/urls.py and services/email_service/config/urls.py
+- [ ] T097 [P] [US7] Implement email-message domain models and repository contracts in services/email_service/emails/domain/entities.py and services/email_service/emails/domain/repositories.py
+- [ ] T098 [US7] Implement email send/retry/replay use cases in services/email_service/emails/application/use_cases/process_event_email.py, services/email_service/emails/application/use_cases/send_email.py, and services/email_service/emails/application/use_cases/retry_email.py
+- [ ] T099 [US7] Implement email persistence models and migrations in services/email_service/email_service/models.py and services/email_service/migrations/
+- [ ] T100 [P] [US7] Implement email repository, SMTP provider, and event consumers in services/email_service/emails/infrastructure/repositories.py, services/email_service/emails/infrastructure/smtp_provider.py, and services/email_service/emails/infrastructure/event_consumers.py
+- [ ] T101 [P] [US7] Add HTML and text email templates for all supported event types in services/email_service/emails/infrastructure/templates/
+- [ ] T102 [US7] Implement admin serializers and monitoring views in services/email_service/emails/presentation/serializers.py and services/email_service/emails/presentation/views.py
+- [ ] T103 [US7] Wire admin email endpoints in services/email_service/emails/presentation/urls.py and services/email_service/email_service/urls.py
 
-**Checkpoint**: All 6 transactional email types are triggered by events and delivered asynchronously. Retry and dead-letter flows work correctly.
+**Checkpoint**: Transactional email delivery is asynchronous, observable, and resilient.
 
 ---
 
-## Phase 12: User Story 8 — Admin Product Management (Priority: P3)
+## Phase 12: User Story 8 - Admin Product Management (Priority: P3)
 
-**Goal**: Administrators create, update, and delete products and categories, manage inventory levels, and manage coupons and orders. Changes reflect on the storefront.
+**Goal**: Give admins the ability to manage products, categories, coupons, and order statuses from the frontend admin area.
 
-> **Cross-reference**: Backend coupon admin API already implemented in US4 (T082-T087). Backend order API in US5 (T090-T099). This phase adds admin-specific product use cases and all **frontend admin UI** pages.
+**Independent Test**: Log in as admin, create and edit a product, manage a coupon, update an order status, and verify storefront changes reflect correctly.
 
-**Independent Test**: Log in as admin, create a new product, verify it appears on storefront, update price, verify change, attempt to delete product with pending orders (expect rejection).
+### Tests for User Story 8
 
-### Tests for User Story 8 (Write FIRST — must FAIL before implementation)
-
-- [ ] T157 [US8] Integration tests for admin product CRUD (create, update, delete/deactivate with pending order guard) and category management in services/product_service/tests/integration/test_admin_api.py
+- [ ] T104 [US8] Add integration tests for admin product/category management and pending-order deletion guards in services/product_service/tests/integration/test_admin_api.py
 
 ### Implementation for User Story 8
 
-- [ ] T123 [US8] Implement admin product use cases (CreateProduct, UpdateProduct, DeleteOrDeactivateProduct with pending order check, ManageCategories, UpdateInventory) in services/product_service/catalog/application/admin_use_cases.py
-- [ ] T124 [US8] Create admin DRF serializers (ProductCreateSerializer, ProductUpdateSerializer, CategoryCreateUpdateSerializer) in services/product_service/catalog/presentation/admin_serializers.py
-- [ ] T125 [US8] Create admin DRF views (ProductAdminListCreateView, ProductAdminDetailView, CategoryAdminListCreateView, CategoryAdminDetailView) in services/product_service/catalog/presentation/admin_views.py
-- [ ] T126 [P] [US8] Create frontend admin layout with sidebar navigation (Products, Coupons, Orders, Dashboard) and role guard in frontend/src/app/admin/layout.tsx
-- [ ] T127 [P] [US8] Create frontend admin product management pages (product list table, create form, edit form, delete confirmation) in frontend/src/app/admin/products/
-- [ ] T128 [P] [US8] Create frontend admin coupon management pages (coupon list, create form, edit form, toggle active) in frontend/src/app/admin/coupons/
-- [ ] T129 [P] [US8] Create frontend admin order management pages (order list with status filter, order detail, status update form) in frontend/src/app/admin/orders/
-- [ ] T130 [US8] Create frontend admin dashboard with overview metrics (total orders, revenue, active products, active coupons) in frontend/src/app/admin/page.tsx
+- [ ] T105 [US8] Implement admin product/category application use cases in services/product_service/catalog/application/use_cases/admin_create_product.py, services/product_service/catalog/application/use_cases/admin_update_product.py, services/product_service/catalog/application/use_cases/admin_delete_product.py, and services/product_service/catalog/application/use_cases/admin_manage_category.py
+- [ ] T106 [US8] Implement admin serializers and views for product/category management in services/product_service/catalog/presentation/admin_serializers.py and services/product_service/catalog/presentation/admin_views.py
+- [ ] T107 [US8] Wire admin product/category routes in services/product_service/catalog/presentation/admin_urls.py and services/product_service/product_service/urls.py
+- [ ] T108 [P] [US8] Build the admin shell and dashboard in frontend/src/app/admin/layout.tsx and frontend/src/app/admin/page.tsx
+- [ ] T109 [P] [US8] Build admin product management pages in frontend/src/app/admin/products/page.tsx, frontend/src/app/admin/products/new/page.tsx, and frontend/src/app/admin/products/[id]/page.tsx
+- [ ] T110 [P] [US8] Build admin coupon management pages in frontend/src/app/admin/coupons/page.tsx and frontend/src/app/admin/coupons/[id]/page.tsx
+- [ ] T111 [US8] Build admin order management pages in frontend/src/app/admin/orders/page.tsx and frontend/src/app/admin/orders/[orderNumber]/page.tsx
 
-**Checkpoint**: Admin can fully manage products, coupons, and orders via the admin interface. Role-based access enforced.
+**Checkpoint**: Admins can manage operational catalog, coupon, and order workflows from the UI.
 
 ---
 
 ## Phase 13: Polish & Cross-Cutting Concerns
 
-**Purpose**: Final refinements, documentation, security hardening, and deployment readiness.
+**Purpose**: Finalize documentation, performance, security, and deployment readiness across the completed stories.
 
-- [ ] T131 [P] Finalize docker-compose.yml with health checks, restart policies, named volumes, and proper networking in docker-compose.yml
-- [ ] T132 [P] Create docker-compose.prod.yml with production overrides (resource limits, replica counts, no debug) in docker-compose.prod.yml
-- [ ] T133 [P] Add OpenAPI/Swagger auto-generation per service using drf-spectacular in services/*/config/settings.py (markdown contracts satisfy Principle V pre-implementation; machine-readable OpenAPI is a polish step)
-- [ ] T134 [P] Create seed data management commands for all remaining services (admin user, sample orders) in services/*/management/commands/
-- [ ] T135 Security hardening: HTTPS enforcement, CSRF protection, Secure cookie flags, input sanitization, SQL injection prevention audit across all services
-- [ ] T136 [P] Add Redis caching layer for product catalog (list/detail) and coupon validation in services/product_service/ and services/coupon_service/
-- [ ] T137 Validate quickstart.md flow end-to-end (docker compose up → migrations → seed → register → browse → purchase → verify email + rewards)
-- [ ] T138 Update project README.md with final architecture diagram, API documentation links, and deployment guide
-- [ ] T158 [P] Create Kubernetes Helm chart base with HPA auto-scaling configuration per service to satisfy FR-046 in deploy/helm/
-- [ ] T159 Run load tests (locust or k6) validating SC-002 (1000 users, <200ms p95), SC-003 (<2s search), SC-009 (<1s coupon), SC-010 (<30s rewards) in tests/load/
+- [ ] T112 [P] Add OpenAPI generation and API schema publishing for each backend service in services/auth_service/auth_service/settings.py, services/product_service/product_service/settings.py, services/cart_service/cart_service/settings.py, services/coupon_service/coupon_service/settings.py, services/order_service/order_service/settings.py, services/reward_service/reward_service/settings.py, services/email_service/email_service/settings.py, and services/gateway/gateway/settings.py
+- [ ] T113 [P] Add caching and performance tuning for product catalog and coupon validation in services/product_service/catalog/infrastructure/repositories.py and services/coupon_service/coupons/infrastructure/repositories.py
+- [ ] T114 Harden cookies, CSRF, HTTPS, input validation, and service-to-service auth settings in services/auth_service/auth_service/settings.py, services/gateway/gateway/settings.py, and shared/common/config.py
+- [ ] T115 [P] Add load and smoke test coverage with explicit pass thresholds: SC-002 (1000 concurrent users, <200ms p95 catalog API), SC-003 (95% of search queries <2s), SC-009 (coupon validation <1s), and SC-010 (reward credit <30s) in testing/load/test_catalog.py, testing/load/test_checkout.py, and testing/smoke/test_quickstart_flow.py
+- [ ] T116 Validate the documented startup flow and seed commands against specs/001-mango-ecommerce-platform/quickstart.md and update README.md with the verified commands and architecture summary
+- [ ] T117 [P] Add deployment scaffolding for horizontal scaling targets in docker-compose.yml, docker/docker-compose.prod.yml, and deploy/helm/
+- [ ] T125 [P] Add funnel analytics instrumentation and reporting for first-purchase success (SC-005) in frontend/src/lib/analytics/funnel.ts, frontend/src/app/checkout/success/page.tsx, and shared/testing/fixtures.py
+- [ ] T126 Add automated KPI validation for SC-005 in testing/smoke/test_first_purchase_success.py and README.md
 
 ---
 
@@ -373,146 +331,84 @@
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies — can start immediately
-- **Foundational (Phase 2)**: Depends on Setup (Phase 1) completion — **BLOCKS all user stories**
-- **US9 — Gateway (Phase 3)**: Depends on Phase 2 — needed for all frontend-to-backend routing
-- **US1 — Auth (Phase 4)**: Depends on Phase 2 — can run **in parallel** with US9
-- **US2 — Products (Phase 5)**: Depends on Phase 2 — can run **in parallel** with US9 and US1
-- **US10 — Messaging (Phase 6)**: Depends on Phase 2 — enables async event flows for P2/P3 stories
-- **US3 — Cart (Phase 7)**: Depends on US9 (routing), US1 (auth), US2 (product data)
-- **US4 — Coupons (Phase 8)**: Depends on US9 (routing), US1 (auth) — can run **in parallel** with US3
-- **US5 — Orders (Phase 9)**: Depends on US3 (cart), US4 (coupons), US10 (events)
-- **US6 — Rewards (Phase 10)**: Depends on US5 (order events), US10 (message bus)
-- **US7 — Email (Phase 11)**: Depends on US10 (message bus) — can run **in parallel** with US6
-- **US8 — Admin (Phase 12)**: Depends on US1 (admin auth), US2 (product models), US4 (coupon models)
-- **Polish (Phase 13)**: Depends on all desired user stories being complete
+- **Phase 1: Setup** has no dependencies.
+- **Phase 2: Foundational** depends on Phase 1 and blocks all story work (including OpenAPI baseline task T118).
+- **Phase 3: US1**, **Phase 4: US2**, and **Phase 5: US9** can start after Phase 2 and may proceed in parallel.
+- **Phase 6: US3** depends on US1, US2, and US9.
+- **Phase 7: US4** depends on US1 and US9.
+- **Phase 8: US10** depends on Phase 2 and should finish before event-driven downstream stories rely on it.
+- **Phase 9: US5** depends on US3, US4, and US10.
+- **Phase 10: US6** depends on US5 and US10.
+- **Phase 11: US7** depends on US1, US5, and US10.
+- **Phase 12: US8** depends on US1, US2, US4, and US5.
+- **Phase 13: Polish** depends on all desired user stories being complete.
 
-### Dependency Graph
+### User Story Dependency Graph
 
+```text
+Setup -> Foundational
+Foundational -> US1, US2, US9, US10
+US1 + US2 + US9 -> US3
+US1 + US9 -> US4
+US3 + US4 + US10 -> US5
+US5 + US10 -> US6
+US1 + US5 + US10 -> US7
+US1 + US2 + US4 + US5 -> US8
+All complete -> Polish
 ```
-Phase 1: Setup
-    │
-    ▼
-Phase 2: Foundational
-    │
-    ├──────────────────────────────────────────────┐
-    │                                              │
-    ▼                                              ▼
-Phase 3: US9 (Gateway) ──┐     Phase 6: US10 (Messaging)
-Phase 4: US1 (Auth) ─────┤              │
-Phase 5: US2 (Products) ─┤              │
-    [P1 — run in parallel]│              │
-    │                     │              │
-    ▼                     ▼              ▼
-Phase 7: US3 (Cart) ◄────┘    Phase 8: US4 (Coupons)
-    │                              │
-    ▼                              ▼
-Phase 9: US5 (Orders) ◄───────────┘
-    │
-    ├──────────────┐
-    ▼              ▼
-Phase 10: US6    Phase 11: US7 (Email)
-(Rewards)          [can run in parallel]
-    │              │
-    ▼              ▼
-Phase 12: US8 (Admin) ◄── depends on US1, US2, US4
-    │
-    ▼
-Phase 13: Polish
-```
-
-### Within Each User Story
-
-1. **Domain layer** first (entities, value objects, repository interfaces) — ZERO Django imports
-2. **Application layer** (use cases depending on domain interfaces)
-3. **Infrastructure layer** (ORM models, repository implementations, external integrations)
-4. **Presentation layer** (DRF serializers, views, URL routing)
-5. **Frontend** pages and components
-6. Integration and wiring
 
 ### Parallel Opportunities
 
-- **Phase 1**: T002-T004, T006-T008, T010 can all run in parallel after T001
-- **Phase 2**: All [P] tasks (T012-T017, T019-T027) can run in parallel once T011 completes
-- **Phases 3-5**: US9, US1, US2 can start simultaneously after Phase 2 (different services, no file conflicts)
-- **Phases 7-8**: US3 (Cart) and US4 (Coupons) can run in parallel
-- **Phases 10-11**: US6 (Rewards) and US7 (Email) can run in parallel after US5/US10
-- **Within any story**: Domain layer [P] tasks can run in parallel; frontend [P] tasks can run in parallel
+- **US1**: T021 and T023 can proceed in parallel after tests are written.
+- **US2**: T031 and T033 can proceed in parallel after tests are written.
+- **US9**: T041, T043, and T044 can proceed in parallel after tests are written.
+- **US3**: T051 and T053 can proceed in parallel after tests are written.
+- **US4**: T061 and T063 can proceed in parallel after tests are written.
+- **US10**: T070 and T071 can proceed in parallel after T069.
+- **US5**: T077, T079, and T080 can proceed in parallel after tests are written.
+- **US6**: T088 and T090 can proceed in parallel after tests are written.
+- **US7**: T097, T099, and T101 can proceed in parallel after tests are written.
+- **US8**: T108, T109, and T110 can proceed in parallel after T105-T107 are settled.
+- **Polish**: T125 and T117 can proceed in parallel after core stories are complete.
 
 ---
 
-## Parallel Example: User Story 1 (Auth)
+## Parallel Execution Examples
 
-```bash
-# Step 1: Domain layer (T039) — all domain files in one task
-Task: "Create auth domain layer" → services/auth_service/auth/domain/
-
-# Step 2: Application layer (T040) — depends on T039
-Task: "Implement auth application use cases" → services/auth_service/auth/application/
-
-# Step 3: Infrastructure — T041 first, then T042-T044 in parallel
-Task: "Create auth ORM models" (T041)
-Task [P]: "Implement DjangoUserRepository" (T042)
-Task [P]: "Implement JWT provider" (T043)
-Task: "Implement event publisher" (T044) — depends on shared message_bus
-
-# Step 4: Presentation — sequential within layer
-Task: "Create DRF serializers" (T045)
-Task: "Create DRF views" (T046)
-Task: "Configure URL routing" (T047)
-
-# Step 5: Frontend — T048-T050 in parallel, then T051
-Task [P]: "Create login page" (T048)
-Task [P]: "Create register page" (T049)
-Task [P]: "Create forgot-password pages" (T050)
-Task: "Wire auth forms to API client" (T051)
-```
+- **US1**: Run T021, T023, and T027 in parallel after T019-T020 define the expected behavior.
+- **US2**: Run T031, T033, and T037 in parallel after T029-T030.
+- **US9**: Run T041, T043, and T044 in parallel after T039-T040.
+- **US3**: Run T051, T053, and T057 in parallel after T049-T050.
+- **US4**: Run T061, T063, and T067 in parallel after T059-T060.
+- **US10**: Run T070 and T071 in parallel after T068-T069.
+- **US5**: Run T077, T079, and T084 in parallel after T074-T076.
+- **US6**: Run T088, T090, and T094 in parallel after T086-T087.
+- **US7**: Run T097, T099, and T101 in parallel after T095-T096.
+- **US8**: Run T108, T109, and T110 in parallel after T104-T107.
+- **US5 completion**: Include T121 and T122 before marking checkout side effects done.
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (P1 Stories Only)
+### Suggested MVP Scope
 
-1. Complete Phase 1: Setup (10 tasks)
-2. Complete Phase 2: Foundational — **CRITICAL, blocks all stories** (18 tasks)
-3. Complete Phases 3-5: US9 + US1 + US2 in parallel (35 tasks)
-4. **STOP and VALIDATE**: Gateway + Auth + Products working end-to-end
-5. Deploy/demo MVP: users can register, browse, and search products
+1. Complete Phase 1 and Phase 2.
+2. Deliver US1, US2, and US9 as the first deployable slice.
+3. Validate registration, catalog browsing, and gateway routing before starting cart/checkout work.
 
 ### Incremental Delivery
 
-1. **Foundation** (Phases 1-2) → Infrastructure ready → 28 tasks
-2. **MVP** (Phases 3-5) → Gateway + Auth + Products → 41 tasks → First deployment
-3. **Commerce** (Phases 6-9) → Messaging + Cart + Coupons + Orders → 47 tasks → Full purchase flow
-4. **Loyalty** (Phases 10-11) → Rewards + Email → 24 tasks → Enhanced experience
-5. **Operations** (Phases 12-13) → Admin + Polish → 19 tasks → Production ready
+1. **Foundation**: Setup + Foundational.
+2. **MVP**: US1 + US2 + US9.
+3. **Commerce**: US3 + US4 + US10 + US5.
+4. **Retention**: US6 + US7.
+5. **Operations**: US8 + Polish.
 
-### Suggested MVP Scope
+### Execution Notes
 
-**Minimum MVP** (Phases 1-5): 69 tasks
-- Delivers: User registration, authentication, product catalog with search/filtering
-- Value: Users can register, browse products, and experience the platform core
-
-**Extended MVP** (Phases 1-9): 116 tasks
-- Delivers: Full purchase flow with cart, coupons, orders, and payment
-- Value: Complete e-commerce transaction capability
-
-**Full Platform** (Phases 1-13): 159 tasks
-- Delivers: Rewards, email notifications, admin management, production readiness
-- Value: Feature-complete platform ready for production deployment
-
----
-
-## Notes
-
-- **[P] tasks** = different files, no dependencies on in-progress tasks
-- **[USx] label** maps each task to a specific user story for traceability
-- Each user story is independently completable and testable at its checkpoint
-- **Domain layer** has ZERO Django imports — pure Python dataclasses and ABCs
-- All **cross-service references** use opaque UUIDs (no foreign keys across services)
-- **Commit** after each task or logical group
-- Stop at any **checkpoint** to validate the completed story independently
-- Constitution Principle III (Test-First Development) is satisfied with test tasks T139-T157 written BEFORE implementation in each phase
-- SC-005 (90% first-purchase success rate) is a UX metric measured via production analytics, not automated testing
-- Avoid: vague tasks, same-file conflicts across parallel tasks, cross-story dependencies that break independence
+- Write the story tests before implementation and confirm they fail for the expected reason.
+- Complete T118 before starting story implementation so API-first requirements remain constitution-compliant.
+- Keep domain code free of Django imports.
+- Prefer one logical commit per completed task or small task bundle.
+- Stop at each checkpoint and validate the story independently before continuing.

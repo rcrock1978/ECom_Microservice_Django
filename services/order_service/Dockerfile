@@ -1,10 +1,10 @@
 # Dockerfile for order_service
-FROM python:3.11-slim
+FROM python:3.12-slim
 WORKDIR /app
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml ./
 RUN pip install --upgrade pip && \
     pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --no-dev
+    poetry install --no-root --without dev
 COPY . .
-CMD ["uvicorn", "order_service.wsgi:application", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "django", "runserver", "0.0.0.0:8000"]

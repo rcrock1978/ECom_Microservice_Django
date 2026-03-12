@@ -1,0 +1,1 @@
+# Emails application package

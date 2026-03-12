@@ -1,8 +1,8 @@
 # Dockerfile for frontend
 FROM node:20-alpine
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 RUN npm install -g pnpm && pnpm install
 COPY . .
-RUN pnpm build
-CMD ["pnpm", "start"]
+EXPOSE 3000
+CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "3000"]

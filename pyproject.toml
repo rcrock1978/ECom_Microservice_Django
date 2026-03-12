@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ecom-microservices-workspace"
+version = "0.1.0"
+description = "Mango e-commerce microservices workspace"
+authors = ["Mango Team"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-django = "^4.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"

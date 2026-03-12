@@ -1,0 +1,141 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mango_dev
+      POSTGRES_USER: mango
+      POSTGRES_PASSWORD: mango_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    environment:
+      RABBITMQ_DEFAULT_USER: mango
+      RABBITMQ_DEFAULT_PASS: mango_pass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  auth-service:
+    build:
+      context: ./services/auth_service
+    env_file:
+      - ./services/auth_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8001:8000"
+
+  product-service:
+    build:
+      context: ./services/product_service
+    env_file:
+      - ./services/product_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8002:8000"
+
+  cart-service:
+    build:
+      context: ./services/cart_service
+    env_file:
+      - ./services/cart_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8003:8000"
+
+  order-service:
+    build:
+      context: ./services/order_service
+    env_file:
+      - ./services/order_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8004:8000"
+
+  coupon-service:
+    build:
+      context: ./services/coupon_service
+    env_file:
+      - ./services/coupon_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8005:8000"
+
+  reward-service:
+    build:
+      context: ./services/reward_service
+    env_file:
+      - ./services/reward_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8006:8000"
+
+  email-service:
+    build:
+      context: ./services/email_service
+    env_file:
+      - ./services/email_service/.env.example
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "8007:8000"
+
+  gateway:
+    build:
+      context: ./services/gateway
+    env_file:
+      - ./services/gateway/.env.example
+    depends_on:
+      - auth-service
+      - product-service
+      - cart-service
+      - order-service
+      - coupon-service
+      - reward-service
+      - email-service
+      - redis
+    ports:
+      - "8080:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - gateway
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

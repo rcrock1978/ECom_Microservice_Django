@@ -287,6 +287,8 @@ When key events occur (order placed, payment completed, inventory changed), the 
 
 ## Success Criteria *(mandatory)*
 
+Validation note: The performance and latency thresholds below are normative and must be used as pass/fail criteria in implementation validation (SC-002, SC-003, SC-009, SC-010).
+
 ### Measurable Outcomes
 
 - **SC-001**: Users can complete the full purchase flow (register → browse → add to cart → checkout → receive confirmation) in under 5 minutes.
