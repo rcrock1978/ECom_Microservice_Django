@@ -114,19 +114,19 @@
 
 ### Tests for User Story 9
 
-- [ ] T039 [P] [US9] Add gateway unit tests for route matching, JWT validation, and rate-limit rules in services/gateway/tests/unit/test_routes.py, services/gateway/tests/unit/test_jwt_validator.py, and services/gateway/tests/unit/test_rate_limiter.py
-- [ ] T040 [US9] Add gateway integration tests for proxy forwarding, auth rejection, upstream failure handling, and header injection in services/gateway/tests/integration/test_proxy.py
+- [X] T039 [P] [US9] Add gateway unit tests for route matching, JWT validation, and rate-limit rules in services/gateway/tests/unit/test_routes.py, services/gateway/tests/unit/test_jwt_validator.py, and services/gateway/tests/unit/test_rate_limiter.py
+- [X] T040 [US9] Add gateway integration tests for proxy forwarding, auth rejection, upstream failure handling, and header injection in services/gateway/tests/integration/test_proxy.py
 
 ### Implementation for User Story 9
 
-- [ ] T041 [P] [US9] Implement route maps and rate-limit definitions in services/gateway/gateway/domain/routes.py and services/gateway/gateway/domain/rate_limits.py
-- [ ] T042 [US9] Implement proxy orchestration and service health aggregation use cases in services/gateway/gateway/application/proxy_request.py and services/gateway/gateway/application/health_summary.py
-- [ ] T043 [P] [US9] Implement async upstream HTTP client and service registry helpers in services/gateway/gateway/infrastructure/http_client.py and services/gateway/routing.py
-- [ ] T044 [P] [US9] Implement JWT validation and Redis-backed throttling services in services/gateway/gateway/infrastructure/jwt_validator.py and services/gateway/gateway/infrastructure/rate_limiter.py
-- [ ] T045 [US9] Implement request middleware for correlation ID, auth, throttling, and logging in services/gateway/gateway/presentation/middleware/request_context.py and services/gateway/gateway/presentation/middleware/auth.py
-- [ ] T046 [US9] Implement gateway proxy and health views in services/gateway/gateway/presentation/views.py
-- [ ] T047 [US9] Wire gateway URLs and upstream route exposure in services/gateway/gateway/presentation/urls.py and services/gateway/gateway/urls.py
-- [ ] T048 [US9] Point the frontend API base configuration to the gateway and handle normalized gateway errors in frontend/src/lib/api/client.ts and frontend/src/types/index.ts
+- [X] T041 [P] [US9] Implement route maps and rate-limit definitions in services/gateway/gateway/domain/routes.py and services/gateway/gateway/domain/rate_limits.py
+- [X] T042 [US9] Implement proxy orchestration and service health aggregation use cases in services/gateway/gateway/application/proxy_request.py and services/gateway/gateway/application/health_summary.py
+- [X] T043 [P] [US9] Implement async upstream HTTP client and service registry helpers in services/gateway/gateway/infrastructure/http_client.py and services/gateway/routing.py
+- [X] T044 [P] [US9] Implement JWT validation and Redis-backed throttling services in services/gateway/gateway/infrastructure/jwt_validator.py and services/gateway/gateway/infrastructure/rate_limiter.py
+- [X] T045 [US9] Implement request middleware for correlation ID, auth, throttling, and logging in services/gateway/gateway/presentation/middleware/request_context.py and services/gateway/gateway/presentation/middleware/auth.py
+- [X] T046 [US9] Implement gateway proxy and health views in services/gateway/gateway/presentation/views.py
+- [X] T047 [US9] Wire gateway URLs and upstream route exposure in services/gateway/gateway/presentation/urls.py and services/gateway/gateway/urls.py
+- [X] T048 [US9] Point the frontend API base configuration to the gateway and handle normalized gateway errors in frontend/src/lib/api/client.ts and frontend/src/types/index.ts
 
 **Checkpoint**: The frontend talks only to the gateway, and the gateway correctly handles routing, auth, rate limiting, and service errors.
 
