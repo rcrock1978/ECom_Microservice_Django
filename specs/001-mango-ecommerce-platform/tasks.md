@@ -60,21 +60,21 @@
 
 ### Tests for User Story 1
 
-- [ ] T019 [P] [US1] Add domain and use-case unit tests for user validation, password rules, refresh token rotation, and lockout behavior in services/auth_service/tests/unit/test_entities.py and services/auth_service/tests/unit/test_use_cases.py
-- [ ] T020 [US1] Add API integration tests for register, login, refresh, logout, me, forgot-password, and reset-password flows in services/auth_service/tests/integration/test_auth_api.py
+- [X] T019 [P] [US1] Add domain and use-case unit tests for user validation, password rules, refresh token rotation, and lockout behavior in services/auth_service/tests/unit/test_entities.py and services/auth_service/tests/unit/test_use_cases.py
+- [X] T020 [US1] Add API integration tests for register, login, refresh, logout, me, forgot-password, and reset-password flows in services/auth_service/tests/integration/test_auth_api.py
 
 ### Implementation for User Story 1
 
-- [ ] T021 [P] [US1] Implement auth domain entities, value objects, and domain events in services/auth_service/auth/domain/entities.py and services/auth_service/auth/domain/value_objects.py
-- [ ] T022 [US1] Implement registration, login, refresh, logout, profile, forgot-password, and reset-password use cases in services/auth_service/auth/application/use_cases/register_user.py, services/auth_service/auth/application/use_cases/login_user.py, services/auth_service/auth/application/use_cases/refresh_token.py, services/auth_service/auth/application/use_cases/logout_user.py, services/auth_service/auth/application/use_cases/get_profile.py, services/auth_service/auth/application/use_cases/forgot_password.py, and services/auth_service/auth/application/use_cases/reset_password.py
-- [ ] T023 [US1] Implement persistence models and migrations for users and refresh tokens in services/auth_service/auth_service/models.py and services/auth_service/auth_service/migrations/
-- [ ] T024 [P] [US1] Implement repository, password hashing, and token services in services/auth_service/auth/infrastructure/repositories.py, services/auth_service/auth/application/crypto.py, and services/auth_service/auth/application/jwt_utils.py
-- [ ] T025 [US1] Implement auth serializers and views in services/auth_service/auth/presentation/serializers.py and services/auth_service/auth/presentation/views.py
-- [ ] T026 [US1] Wire auth endpoints and service URLs in services/auth_service/auth/presentation/urls.py and services/auth_service/auth_service/urls.py
-- [ ] T027 [P] [US1] Build login, register, forgot-password, and reset-password pages in frontend/src/app/(auth)/login/page.tsx, frontend/src/app/(auth)/register/page.tsx, frontend/src/app/(auth)/forgot-password/page.tsx, and frontend/src/app/(auth)/reset-password/page.tsx
-- [ ] T028 [US1] Connect frontend auth pages to the shared API/auth context and protected-route behavior in frontend/src/lib/auth/context.tsx and frontend/src/components/layout/Header.tsx
-- [ ] T119 [US1] Implement and verify registration/password-reset email delivery path required by US1 acceptance in services/auth_service/auth/infrastructure/event_publisher.py, services/email_service/emails/infrastructure/event_consumers.py, and services/email_service/emails/infrastructure/templates/
-- [ ] T120 [US1] Add integration coverage for registration/password-reset side effects (email queued and sent) in services/auth_service/tests/integration/test_auth_email_flow.py and services/email_service/tests/integration/test_auth_events.py
+- [X] T021 [P] [US1] Implement auth domain entities, value objects, and domain events in services/auth_service/auth/domain/entities.py and services/auth_service/auth/domain/value_objects.py
+- [X] T022 [US1] Implement registration, login, refresh, logout, profile, forgot-password, and reset-password use cases in services/auth_service/auth/application/use_cases/register_user.py, services/auth_service/auth/application/use_cases/login_user.py, services/auth_service/auth/application/use_cases/refresh_token.py, services/auth_service/auth/application/use_cases/logout_user.py, services/auth_service/auth/application/use_cases/get_profile.py, services/auth_service/auth/application/use_cases/forgot_password.py, and services/auth_service/auth/application/use_cases/reset_password.py
+- [X] T023 [US1] Implement persistence models and migrations for users and refresh tokens in services/auth_service/auth_service/models.py and services/auth_service/auth_service/migrations/
+- [X] T024 [P] [US1] Implement repository, password hashing, and token services in services/auth_service/auth/infrastructure/repositories.py, services/auth_service/auth/application/crypto.py, and services/auth_service/auth/application/jwt_utils.py
+- [X] T025 [US1] Implement auth serializers and views in services/auth_service/auth/presentation/serializers.py and services/auth_service/auth/presentation/views.py
+- [X] T026 [US1] Wire auth endpoints and service URLs in services/auth_service/auth/presentation/urls.py and services/auth_service/auth_service/urls.py
+- [X] T027 [P] [US1] Build login, register, forgot-password, and reset-password pages in frontend/src/app/(auth)/login/page.tsx, frontend/src/app/(auth)/register/page.tsx, frontend/src/app/(auth)/forgot-password/page.tsx, and frontend/src/app/(auth)/reset-password/page.tsx
+- [X] T028 [US1] Connect frontend auth pages to the shared API/auth context and protected-route behavior in frontend/src/lib/auth/context.tsx and frontend/src/components/layout/Header.tsx
+- [X] T119 [US1] Implement and verify registration/password-reset email delivery path required by US1 acceptance in services/auth_service/auth/infrastructure/event_publisher.py, services/email_service/emails/infrastructure/event_consumers.py, and services/email_service/emails/infrastructure/templates/
+- [X] T120 [US1] Add integration coverage for registration/password-reset side effects (email queued and sent) in services/auth_service/tests/integration/test_auth_email_flow.py and services/email_service/tests/integration/test_auth_events.py
 
 **Checkpoint**: Registration, login, session refresh, logout, profile lookup, and password reset work end to end.
 
