@@ -1,0 +1,16 @@
+replicaCount:
+  gateway: 3
+  frontend: 2
+  auth: 2
+  product: 3
+  cart: 2
+  order: 2
+  coupon: 2
+  reward: 2
+  email: 2
+image:
+  repository: mango
+  tag: latest
+service:
+  gatewayPort: 8080
+  frontendPort: 3000

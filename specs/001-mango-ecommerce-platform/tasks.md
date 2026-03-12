@@ -316,14 +316,14 @@
 
 **Purpose**: Finalize documentation, performance, security, and deployment readiness across the completed stories.
 
-- [ ] T112 [P] Add OpenAPI generation and API schema publishing for each backend service in services/auth_service/auth_service/settings.py, services/product_service/product_service/settings.py, services/cart_service/cart_service/settings.py, services/coupon_service/coupon_service/settings.py, services/order_service/order_service/settings.py, services/reward_service/reward_service/settings.py, services/email_service/email_service/settings.py, and services/gateway/gateway/settings.py
-- [ ] T113 [P] Add caching and performance tuning for product catalog and coupon validation in services/product_service/catalog/infrastructure/repositories.py and services/coupon_service/coupons/infrastructure/repositories.py
-- [ ] T114 Harden cookies, CSRF, HTTPS, input validation, and service-to-service auth settings in services/auth_service/auth_service/settings.py, services/gateway/gateway/settings.py, and shared/common/config.py
-- [ ] T115 [P] Add load and smoke test coverage with explicit pass thresholds: SC-002 (1000 concurrent users, <200ms p95 catalog API), SC-003 (95% of search queries <2s), SC-009 (coupon validation <1s), and SC-010 (reward credit <30s) in testing/load/test_catalog.py, testing/load/test_checkout.py, and testing/smoke/test_quickstart_flow.py
-- [ ] T116 Validate the documented startup flow and seed commands against specs/001-mango-ecommerce-platform/quickstart.md and update README.md with the verified commands and architecture summary
-- [ ] T117 [P] Add deployment scaffolding for horizontal scaling targets in docker-compose.yml, docker/docker-compose.prod.yml, and deploy/helm/
-- [ ] T125 [P] Add funnel analytics instrumentation and reporting for first-purchase success (SC-005) in frontend/src/lib/analytics/funnel.ts, frontend/src/app/checkout/success/page.tsx, and shared/testing/fixtures.py
-- [ ] T126 Add automated KPI validation for SC-005 in testing/smoke/test_first_purchase_success.py and README.md
+- [X] T112 [P] Add OpenAPI generation and API schema publishing for each backend service in services/auth_service/auth_service/settings.py, services/product_service/product_service/settings.py, services/cart_service/cart_service/settings.py, services/coupon_service/coupon_service/settings.py, services/order_service/order_service/settings.py, services/reward_service/reward_service/settings.py, services/email_service/email_service/settings.py, and services/gateway/gateway/settings.py
+- [X] T113 [P] Add caching and performance tuning for product catalog and coupon validation in services/product_service/catalog/infrastructure/repositories.py and services/coupon_service/coupons/infrastructure/repositories.py
+- [X] T114 Harden cookies, CSRF, HTTPS, input validation, and service-to-service auth settings in services/auth_service/auth_service/settings.py, services/gateway/gateway/settings.py, and shared/common/config.py
+- [X] T115 [P] Add load and smoke test coverage with explicit pass thresholds: SC-002 (1000 concurrent users, <200ms p95 catalog API), SC-003 (95% of search queries <2s), SC-009 (coupon validation <1s), and SC-010 (reward credit <30s) in testing/load/test_catalog.py, testing/load/test_checkout.py, and testing/smoke/test_quickstart_flow.py
+- [X] T116 Validate the documented startup flow and seed commands against specs/001-mango-ecommerce-platform/quickstart.md and update README.md with the verified commands and architecture summary
+- [X] T117 [P] Add deployment scaffolding for horizontal scaling targets in docker-compose.yml, docker/docker-compose.prod.yml, and deploy/helm/
+- [X] T125 [P] Add funnel analytics instrumentation and reporting for first-purchase success (SC-005) in frontend/src/lib/analytics/funnel.ts, frontend/src/app/checkout/success/page.tsx, and shared/testing/fixtures.py
+- [X] T126 Add automated KPI validation for SC-005 in testing/smoke/test_first_purchase_success.py and README.md
 
 ---
 

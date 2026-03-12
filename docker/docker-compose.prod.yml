@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  auth-service:
+    deploy:
+      replicas: 2
+  product-service:
+    deploy:
+      replicas: 3
+  cart-service:
+    deploy:
+      replicas: 2
+  order-service:
+    deploy:
+      replicas: 2
+  coupon-service:
+    deploy:
+      replicas: 2
+  reward-service:
+    deploy:
+      replicas: 2
+  email-service:
+    deploy:
+      replicas: 2
+  gateway:
+    deploy:
+      replicas: 3
+  frontend:
+    deploy:
+      replicas: 2
