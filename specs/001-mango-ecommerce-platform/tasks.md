@@ -108,6 +108,11 @@
 - [X] T141 [P] [US1] Unit tests for User entity, Email/Password value objects, and account lockout logic in services/auth_service/tests/unit/test_entities.py and test_use_cases.py
 - [X] T142 [US1] Integration tests for register, login, refresh, logout, me, forgot-password, reset-password endpoints in services/auth_service/tests/integration/test_auth_api.py
 
+### Tests for User Story 2 (Write FIRST — must FAIL before implementation)
+
+- [X] T143 [P] [US2] Unit tests for Product/Category entities and search/filter domain logic in services/product_service/tests/unit/test_entities.py and test_use_cases.py
+- [X] T144 [US2] Integration tests for product list/search/filter, category tree, and internal product lookup endpoints in services/product_service/tests/integration/test_product_api.py
+
 ### Implementation for User Story 1
 
 - [X] T039 [P] [US1] Create auth domain layer (User entity dataclass, Email/Password/Role value objects, UserRepository ABC, UserRegistered/PasswordResetRequested events) in services/auth_service/auth/domain/
@@ -136,23 +141,23 @@
 
 ### Tests for User Story 2 (Write FIRST — must FAIL before implementation)
 
-- [ ] T143 [P] [US2] Unit tests for Product/Category entities and search/filter domain logic in services/product_service/tests/unit/test_entities.py
-- [ ] T144 [US2] Integration tests for product list/search/filter, category tree, and internal product lookup endpoints in services/product_service/tests/integration/test_product_api.py
+- [X] T143 [P] [US2] Unit tests for Product/Category entities and search/filter domain logic in services/product_service/tests/unit/test_entities.py
+- [X] T144 [US2] Integration tests for product list/search/filter, category tree, and internal product lookup endpoints in services/product_service/tests/integration/test_product_api.py
 
 ### Implementation for User Story 2
 
-- [ ] T052 [P] [US2] Create product domain layer (Product entity, Category entity, ProductRepository ABC, CategoryRepository ABC) in services/product_service/catalog/domain/
-- [ ] T053 [US2] Implement product application use cases (ListProducts with filtering/sorting, SearchProducts full-text, GetProductBySlug, ListCategories tree) in services/product_service/catalog/application/
-- [ ] T054 [US2] Create product Django ORM models (Product with full-text index, Category with self-referential parent) and generate migrations in services/product_service/catalog/infrastructure/models.py
-- [ ] T055 [P] [US2] Implement DjangoProductRepository with full-text search (SearchVector/SearchRank), filtering, and pagination in services/product_service/catalog/infrastructure/repositories.py
-- [ ] T056 [P] [US2] Implement DjangoCategoryRepository with nested tree traversal (max 3 levels) in services/product_service/catalog/infrastructure/repositories.py
-- [ ] T057 [US2] Create DRF serializers (ProductListSerializer, ProductDetailSerializer, CategorySerializer, CategoryTreeSerializer) in services/product_service/catalog/presentation/serializers.py
-- [ ] T058 [US2] Create DRF views (ProductListView with query filters, ProductDetailView by slug, CategoryListView, InternalProductView by UUID) in services/product_service/catalog/presentation/views.py
-- [ ] T059 [US2] Configure product service URL routing (/products/*, /categories/*, /internal/products/*) in services/product_service/catalog/presentation/urls.py and services/product_service/config/urls.py
-- [ ] T060 [P] [US2] Create frontend product catalog page (product grid, category sidebar, search bar, pagination controls) in frontend/src/app/products/page.tsx
-- [ ] T061 [P] [US2] Create frontend product detail page (images, description, price, availability, Add to Cart button) in frontend/src/app/products/[slug]/page.tsx
-- [ ] T062 [P] [US2] Create frontend product card and product grid reusable components in frontend/src/components/products/ProductCard.tsx and ProductGrid.tsx
-- [ ] T063 [US2] Create seed data management command with sample products (10+) and categories (5+) in services/product_service/catalog/management/commands/seed_products.py
+- [X] T052 [P] [US2] Create product domain layer (Product entity, Category entity, ProductRepository ABC, CategoryRepository ABC) in services/product_service/catalog/domain/
+- [X] T053 [US2] Implement product application use cases (ListProducts with filtering/sorting, SearchProducts full-text, GetProductBySlug, ListCategories tree) in services/product_service/catalog/application/
+- [X] T054 [US2] Create product Django ORM models (Product with full-text index, Category with self-referential parent) and generate migrations in services/product_service/catalog/infrastructure/models.py
+- [X] T055 [P] [US2] Implement DjangoProductRepository with full-text search (SearchVector/SearchRank), filtering, and pagination in services/product_service/catalog/infrastructure/repositories.py
+- [X] T056 [P] [US2] Implement DjangoCategoryRepository with nested tree traversal (max 3 levels) in services/product_service/catalog/infrastructure/repositories.py
+- [X] T057 [US2] Create DRF serializers (ProductListSerializer, ProductDetailSerializer, CategorySerializer, CategoryTreeSerializer) in services/product_service/catalog/presentation/serializers.py
+- [X] T058 [US2] Create DRF views (ProductListView with query filters, ProductDetailView by slug, CategoryListView, InternalProductView by UUID) in services/product_service/catalog/presentation/views.py
+- [X] T059 [US2] Configure product service URL routing (/products/*, /categories/*, /internal/products/*) in services/product_service/catalog/presentation/urls.py and services/product_service/config/urls.py
+- [X] T060 [P] [US2] Create frontend product catalog page (product grid, category sidebar, search bar, pagination controls) in frontend/src/app/products/page.tsx
+- [X] T061 [P] [US2] Create frontend product detail page (images, description, price, availability, Add to Cart button) in frontend/src/app/products/[slug]/page.tsx
+- [X] T062 [P] [US2] Create frontend product card and product grid reusable components in frontend/src/components/products/ProductCard.tsx and ProductGrid.tsx
+- [X] T063 [US2] Create seed data management command with sample products (10+) and categories (5+) in services/product_service/catalog/management/commands/seed_products.py
 
 **Checkpoint**: Product catalog is browsable with search, category filtering, and detail pages working end-to-end through the gateway. Seed data available.
 

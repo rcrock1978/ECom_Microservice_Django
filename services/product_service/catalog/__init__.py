@@ -1,0 +1,1 @@
+default_app_config = 'services.product_service.catalog.apps.CatalogConfig'

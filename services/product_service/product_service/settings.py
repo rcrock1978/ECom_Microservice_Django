@@ -5,17 +5,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'replace-me')
 DEBUG = os.environ.get('DEBUG', '1') == '1'
-ALLOWED_HOSTS = []
+# allow the Django test client hostname
+ALLOWED_HOSTS = ["testserver"]
 
-INSTALLED_APPS = []
+INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "rest_framework",
+    "services.product_service.catalog",  # product catalog app
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-ROOT_URLCONF = 'product_service.urls'
+ROOT_URLCONF = 'services.product_service.product_service.urls'
 
 TEMPLATES = [
     {
