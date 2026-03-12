@@ -9,4 +9,5 @@ def health(_: object) -> JsonResponse:
 urlpatterns = [
     path("health/", health),
     path("api/v1/", include("catalog.presentation.urls")),
+    path("api/v1/admin/catalog/", include("catalog.presentation.admin_urls")),
 ]

@@ -296,17 +296,17 @@
 
 ### Tests for User Story 8
 
-- [ ] T104 [US8] Add integration tests for admin product/category management and pending-order deletion guards in services/product_service/tests/integration/test_admin_api.py
+- [X] T104 [US8] Add integration tests for admin product/category management and pending-order deletion guards in services/product_service/tests/integration/test_admin_api.py
 
 ### Implementation for User Story 8
 
-- [ ] T105 [US8] Implement admin product/category application use cases in services/product_service/catalog/application/use_cases/admin_create_product.py, services/product_service/catalog/application/use_cases/admin_update_product.py, services/product_service/catalog/application/use_cases/admin_delete_product.py, and services/product_service/catalog/application/use_cases/admin_manage_category.py
-- [ ] T106 [US8] Implement admin serializers and views for product/category management in services/product_service/catalog/presentation/admin_serializers.py and services/product_service/catalog/presentation/admin_views.py
-- [ ] T107 [US8] Wire admin product/category routes in services/product_service/catalog/presentation/admin_urls.py and services/product_service/product_service/urls.py
-- [ ] T108 [P] [US8] Build the admin shell and dashboard in frontend/src/app/admin/layout.tsx and frontend/src/app/admin/page.tsx
-- [ ] T109 [P] [US8] Build admin product management pages in frontend/src/app/admin/products/page.tsx, frontend/src/app/admin/products/new/page.tsx, and frontend/src/app/admin/products/[id]/page.tsx
-- [ ] T110 [P] [US8] Build admin coupon management pages in frontend/src/app/admin/coupons/page.tsx and frontend/src/app/admin/coupons/[id]/page.tsx
-- [ ] T111 [US8] Build admin order management pages in frontend/src/app/admin/orders/page.tsx and frontend/src/app/admin/orders/[orderNumber]/page.tsx
+- [X] T105 [US8] Implement admin product/category application use cases in services/product_service/catalog/application/use_cases/admin_create_product.py, services/product_service/catalog/application/use_cases/admin_update_product.py, services/product_service/catalog/application/use_cases/admin_delete_product.py, and services/product_service/catalog/application/use_cases/admin_manage_category.py
+- [X] T106 [US8] Implement admin serializers and views for product/category management in services/product_service/catalog/presentation/admin_serializers.py and services/product_service/catalog/presentation/admin_views.py
+- [X] T107 [US8] Wire admin product/category routes in services/product_service/catalog/presentation/admin_urls.py and services/product_service/product_service/urls.py
+- [X] T108 [P] [US8] Build the admin shell and dashboard in frontend/src/app/admin/layout.tsx and frontend/src/app/admin/page.tsx
+- [X] T109 [P] [US8] Build admin product management pages in frontend/src/app/admin/products/page.tsx, frontend/src/app/admin/products/new/page.tsx, and frontend/src/app/admin/products/[id]/page.tsx
+- [X] T110 [P] [US8] Build admin coupon management pages in frontend/src/app/admin/coupons/page.tsx and frontend/src/app/admin/coupons/[id]/page.tsx
+- [X] T111 [US8] Build admin order management pages in frontend/src/app/admin/orders/page.tsx and frontend/src/app/admin/orders/[orderNumber]/page.tsx
 
 **Checkpoint**: Admins can manage operational catalog, coupon, and order workflows from the UI.
 

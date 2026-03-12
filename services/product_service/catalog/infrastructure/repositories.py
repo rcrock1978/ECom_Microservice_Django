@@ -36,5 +36,17 @@ class InMemoryCatalogRepository:
                 return product
         return None
 
+    def get_product_by_slug_any_state(self, slug: str) -> Product | None:
+        for product in self.products:
+            if product.slug == slug:
+                return product
+        return None
+
+    def get_category_by_slug(self, slug: str) -> Category | None:
+        for category in self.categories:
+            if category.slug == slug and category.is_active:
+                return category
+        return None
+
     def list_categories(self) -> list[Category]:
         return [item for item in self.categories if item.is_active]
